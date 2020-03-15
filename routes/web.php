@@ -17,13 +17,14 @@ $api = app('Dingo\Api\Routing\Router');
 
 // $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['api']], function ($api) {
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api) {
-    $api->get('register', 'UserController@register');
-    $api->get('login', 'UserController@login');
+    $api->put('register', 'Auth\AuthController@register');
+    $api->post('login', 'Auth\AuthController@login');
+    $api->post('logout', 'Auth\AuthController@logout');
 
-    $api->get('user-types/', 'UserTypeController@index');
-    $api->get('help-request-types/', 'HelpRequestTypeController@index');
+    $api->get('user-types/', 'User\UserTypeController@index');
+    $api->get('help-request-types/', 'HelpRequest\HelpRequestTypeController@index');
 
-    $api->get('help-requests/', 'HelpRequestController@index');
-    $api->get('help-requests/post', 'HelpRequestController@post');
-    $api->get('help-requests/accept', 'HelpRequestController@accept');
+    $api->get('help-requests/', 'HelpRequest\HelpRequestController@index');
+    $api->put('help-requests/post', 'HelpRequest\HelpRequestController@post');
+    $api->put('help-requests/accept', 'HelpRequest\HelpRequestController@accept');
 });

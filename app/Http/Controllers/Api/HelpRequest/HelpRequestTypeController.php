@@ -7,14 +7,14 @@
  * Time: 23:30
  */
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\HelpRequest;
 
 use App\Http\Controllers\Api\ApiController;
-use App\Models\UserType;
+use App\Models\HelpRequestType;
 
-class UserTypeController extends ApiController
+class HelpRequestTypeController extends ApiController
 {
     public function index() {
-        return UserType::all();
+        return HelpRequestType::all();
     }
 }

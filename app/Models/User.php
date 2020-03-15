@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created for tuvecinoteayuda.
+ * User: Luis David de la Fuente Rodriguez
+ * Email: ddelafuente@nesiweb.com
+ * Date: 14/03/2020
+ * Time: 23:30
+ */
 
 namespace App\Models;
 
