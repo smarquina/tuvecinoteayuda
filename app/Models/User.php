@@ -61,7 +61,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereZipCode($value)
  * @mixin \Eloquent
  */
-class User extends BaseModel {
+class User extends BaseModel
+{
 
     use Notifiable, Authenticatable;
 

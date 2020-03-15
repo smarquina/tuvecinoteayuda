@@ -23,5 +23,6 @@ use App\Models\Common\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequestType whereName($value)
  * @mixin \Eloquent
  */
-class HelpRequestType extends BaseModel {
+class HelpRequestType extends BaseModel
+{
 }

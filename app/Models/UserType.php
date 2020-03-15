@@ -23,5 +23,8 @@ use App\Models\Common\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserType whereName($value)
  * @mixin \Eloquent
  */
-class UserType extends BaseModel {
+class UserType extends BaseModel
+{
+    const USER_TYPE_REQUESTER = 1;
+    const USER_TYPE_VOLUNTEER = 2;
 }
