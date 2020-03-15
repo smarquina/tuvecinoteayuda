@@ -20,70 +20,58 @@ class HelpRequestController extends ApiController
 {
     public function index()
     {
-        if (Auth::check()) {
-            $user = Auth::user();
+        $user = Auth::user();
 
-            switch ($user->user_type) {
-                case UserType::USER_TYPE_REQUESTER:
-                    return HelpRequest::where('user_id', '=', Auth::id());
+        switch ($user->user_type) {
+            case UserType::USER_TYPE_REQUESTER:
+                return HelpRequest::where('user_id', '=', Auth::id());
 
-                case UserType::USER_TYPE_VOLUNTEER:
-                    return HelpRequest::where('assigned_user_id', 'IS', 'NULL');
+            case UserType::USER_TYPE_VOLUNTEER:
+                return HelpRequest::whereNull('assigned_user_id');
 
-                default:
-                    return response('', 400);
-            }
-        } else {
-            return response('', 403);
+            default:
+                return response('', 400);
         }
     }
 
     public function put(Request $request)
     {
-        if (Auth::check()) {
-            request()->validate([
-                'help_request_type' => 'required',
-                'message' => 'required',
-            ]);
+        request()->validate([
+            'help_request_type' => 'required',
+            'message' => 'required',
+        ]);
 
-            $data = $request->all();
+        $data = $request->all();
 
-            $check = HelpRequest::create([
-                'user_id' => Auth::id(),
-                'help_request_type' => $data['help_request_type'],
-                'message' => $data['message'],
-            ]);
+        $check = HelpRequest::create([
+            'user_id' => Auth::id(),
+            'help_request_type' => $data['help_request_type'],
+            'message' => $data['message'],
+        ]);
 
-            if ($check) {
-                return response('', 200);
-            } else {
-                return response('', 400);
-            }
+        if ($check) {
+            return response('', 200);
         } else {
-            return response('', 403);
+            return response('', 400);
         }
     }
 
     public function post(Request $request)
     {
-        if (Auth::check()) {
-            request()->validate([
-                'help_request_id' => 'required',
-            ]);
+        request()->validate([
+            'help_request_id' => 'required',
+        ]);
 
-            $data = $request->all();
+        $data = $request->all();
 
-            $help_request = HelpRequest::find($data['help_request_id']);
-            $help_request->assigned_user_id = Auth::id();
-            $help_request->accepted_at = time();
+        $help_request = HelpRequest::find($data['help_request_id']);
+        $help_request->assigned_user_id = Auth::id();
+        $help_request->accepted_at = time();
 
-            if ($$help_request->save()) {
-                return response('', 200);
-            } else {
-                return response('', 400);
-            }
+        if ($help_request->save()) {
+            return response('', 200);
         } else {
-            return response('', 403);
+            return response('', 400);
         }
     }
 }
