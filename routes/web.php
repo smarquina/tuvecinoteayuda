@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 $api = app('Dingo\Api\Routing\Router');
 
-// $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['api']], function ($api) {
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api) {
     $api->put('register', 'Auth\AuthController@register');
     $api->post('login', 'Auth\AuthController@login');

@@ -45,7 +45,7 @@ class AuthController extends ApiController {
             $token = \JWTAuth::fromUser($user);
             return response()->json(array('user' => $user, 'token' => $token));
         } catch (\Exception $exception) {
-            return $this->responseWithError(HttpErrors::errorCodesBeginAt, trans('auth.login.noToken'));
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, trans('auth.login.noToken'));
         }
     }
 
@@ -63,7 +63,7 @@ class AuthController extends ApiController {
 
             return response()->json(['token' => $token]);
         } else {
-            return response('', 403);
+            return $this->responseWithError(HttpErrors::HTTP_UNAUTHORIZED, trans('auth.login.invalidCred'));
         }
     }
 

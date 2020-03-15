@@ -75,14 +75,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $fillable = [
         'name', 'email', 'email_verified_at',
         'phone', 'password', 'remember_token',
-        'user_type',
-        'address', 'city', 'state', 'zip_code',
-        'nearby_areas',
+        'user_type', 'address', 'city', 'state',
+        'zip_code', 'nearby_areas',
     ];
 
     /**
      * The attributes that are mass assignable.
-     * @ -80,7 +86,7 @@ class User extends BaseModel {
      * @var array
      */
     protected $hidden = [
@@ -93,15 +91,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'email_verified_at' => 'datetime',
     ];
 
+
     /**
-     * @ -91,4 +97,24 @@ class User extends BaseModel {
-     * protected $casts = [
-     * 'email_verified_at' => 'datetime',
-     * ];
-     *
-     *
-     *
-     * /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
