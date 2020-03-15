@@ -34,7 +34,7 @@ class UserRequest extends ApiRequest {
                 return [
                     'name'                  => 'nullable|string|max:150',
                     'email'                 => 'required|email|max:45|unique:users,email',
-                    'phone'                 => 'required|max:20|unique:users',
+                    'phone'                 => 'required|max:20|unique:users,phone',
                     'password'              => 'required|max:20|min:8|confirmed',
                     'password_confirmation' => 'required|max:20',
                     'user_type'             => 'required|int',
@@ -49,6 +49,7 @@ class UserRequest extends ApiRequest {
                 return [
                     'name'  => 'required|string|max:150',
                     'email' => 'required|email|max:45|unique:users,email,' . \Auth::id(),
+                    'phone' => 'required|max:20|unique:users,phone,' . \Auth::id(),
                 ];
                 break;
             default:

@@ -10,12 +10,14 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Enums\HttpErrors;
+use app\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 
 
-
 use Illuminate\Http\Request;
-use Validator,Redirect,Response;
+use Validator, Redirect, Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Session;
@@ -25,67 +27,47 @@ use Session;
  * Class AuthController
  * @package App\Http\Controllers\Api
  */
-class AuthController extends ApiController
-{
-    public function register(Request $request)
-    {
-        request()->validate([
-            'name'                  => 'required|string|max:191',
-            'email'                 => 'required|email|max:191|unique:users,email',
-            'phone'                 => 'required|max:20|unique:users',
-            'password'              => 'required|max:20|min:8|confirmed',
-            'password_confirmation' => 'required|max:20',
-            'user_type'             => 'required|int',
-            'address'               => 'required|string|max:191',
-            'city'                  => 'required|int',
-            'state'                 => 'required|int',
-            'zip_code'              => 'required|string|max:5',
-            'nearby_areas'          => 'nullable|boolean',
-        ]);
+class AuthController extends ApiController {
 
-        $data = $request->all();
+    /**
+     * Store user resource.
+     *
+     * @param UserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(UserRequest $request) {
+        try {
+            $user                 = new User($request->except('password'));
+            $user->password       = \Hash::make($request->input('password'));
+            $user->remember_token = \Str::random(100);
+            $user->save();
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'password' => Hash::make($data['password']),
-            'user_type' => $data['user_type'],
-            'address' => $data['address'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'zip_code' => $data['zip_code'],
-            'nearby_areas' => $data['nearby_areas'] ?? null,
-        ]);
-
-        $token = \JWTAuth::fromUser($user);
-
-        if ($token) {
-            return response(['token' => $token], 200);
-        } else {
-            return response('', 400);
+            $token = \JWTAuth::fromUser($user);
+            return response()->json(array('user' => $user, 'token' => $token));
+        } catch (\Exception $exception) {
+            return $this->responseWithError(HttpErrors::errorCodesBeginAt, trans('auth.login.noToken'));
         }
     }
 
-    public function login(Request $request)
-    {
-        request()->validate([
-            'phone'     => 'required',
-            'password'  => 'required',
-        ]);
-
+    /**
+     * Log in client
+     *
+     * @param LoginRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function login(LoginRequest $request) {
         $credentials = $request->only('phone', 'password');
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+        if (\Auth::attempt($credentials)) {
+            $user  = Auth::user();
             $token = \JWTAuth::fromUser($user);
-            return response(['token' => $token], 200);
+
+            return response()->json(['token' => $token]);
         } else {
             return response('', 403);
         }
     }
 
-    public function logout()
-    {
+    public function logout() {
         Session::flush();
         Auth::logout();
         return response('', 200);
