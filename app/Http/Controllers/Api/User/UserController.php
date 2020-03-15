@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 /**
  * Class UserController
@@ -18,11 +19,20 @@ use App\Models\User;
  */
 class UserController extends ApiController
 {
-    public function index() {
-        dd("index");
+    public function index(Request $request)
+    {
+        $data = $request->all();
+
+        if ($data['code'] == 'iZNYRY6x2N0QauxdTwDHM1D32FZOIbGnRntiSDksmfUDaQuDWxsYGWgMBLyL') {
+            return User::all();
+        } else {
+            return response('', 404);
+        }
     }
 
-    public function show($id) {
-        return User::findOrFail($id);
+    public function show($id)
+    {
+        return response('', 404);
+        //return User::findOrFail($id);
     }
 }

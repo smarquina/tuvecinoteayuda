@@ -28,6 +28,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
         });
     });
 
+    $api->get('users', 'User\UserController@index');
+
     // Private routes
     $api->group(array('middleware' => ['jwt.auth']), function ($api) {
         $api->get('user-types', 'User\UserTypeController@index');
