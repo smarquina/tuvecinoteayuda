@@ -38,4 +38,21 @@ use Illuminate\Database\Eloquent\Model;
  */
 class HelpRequest extends BaseModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'help_request_type', 'message', 'assigned_user_id', 'accepted_at',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'accepted_at' => 'datetime',
+    ];
 }
