@@ -12,9 +12,8 @@ namespace App\Http\Controllers\Api\HelpRequest;
 use App\Http\Controllers\Api\ApiController;
 use App\Models\HelpRequest;
 use App\Models\UserType;
-use Illuminate\Http\Request;
 use Auth;
-use Validator;
+use Illuminate\Http\Request;
 
 class HelpRequestController extends ApiController
 {
