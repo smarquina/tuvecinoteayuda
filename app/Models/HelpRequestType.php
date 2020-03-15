@@ -2,8 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Common\BaseModel;
 
-class HelpRequestType extends Model
-{
+/**
+ * App\Models\HelpRequestType
+ *
+ * @property int    $id
+ * @property string $name
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequestType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequestType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequestType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequestType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequestType whereName($value)
+ * @mixin \Eloquent
+ */
+class HelpRequestType extends BaseModel {
 }
