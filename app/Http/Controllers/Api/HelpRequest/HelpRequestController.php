@@ -34,7 +34,7 @@ class HelpRequestController extends ApiController
         }
     }
 
-    public function put(Request $request)
+    public function post(Request $request)
     {
         request()->validate([
             'help_request_type' => 'required',
@@ -56,7 +56,7 @@ class HelpRequestController extends ApiController
         }
     }
 
-    public function post(Request $request)
+    public function put(Request $request)
     {
         request()->validate([
             'help_request_id' => 'required',

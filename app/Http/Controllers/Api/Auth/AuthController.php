@@ -30,32 +30,57 @@ class AuthController extends ApiController
     public function register(Request $request)
     {
         request()->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
+            'name'                  => 'required|string|max:191',
+            'email'                 => 'required|email|max:191|unique:users,email',
+            'phone'                 => 'required|max:20|unique:users',
+            'password'              => 'required|max:20|min:8|confirmed',
+            'password_confirmation' => 'required|max:20',
+            'user_type'             => 'required|int',
+            'address'               => 'required|string|max:191',
+            'city'                  => 'required|int',
+            'state'                 => 'required|int',
+            'zip_code'              => 'required|string|max:5',
+            'especially_vulnerable' => 'nullable|boolean',
+            'nearby_areas'          => 'nullable|boolean',
         ]);
 
         $data = $request->all();
 
-        $check = User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'phone' => $data['phone'],
+            'password' => Hash::make($data['password']),
+            'user_type' => $data['user_type'],
+            'address' => $data['address'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'zip_code' => $data['zip_code'],
+            'especially_vulnerable' => $data['especially_vulnerable'] ?? null,
+            'nearby_areas' => $data['nearby_areas'] ?? null,
         ]);
 
-        return response('', 200);
+        $token = \JWTAuth::fromUser($user);
+
+        if ($token) {
+            return response(['token' => $token], 200);
+        } else {
+            return response('', 400);
+        }
     }
 
     public function login(Request $request)
     {
         request()->validate([
-            'email' => 'required',
-            'password' => 'required',
+            'phone'     => 'required',
+            'password'  => 'required',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone', 'password');
         if (Auth::attempt($credentials)) {
-            return response('', 200);
+            $user = Auth::user();
+            $token = \JWTAuth::fromUser($user);
+            return response(['token' => $token], 200);
         } else {
             return response('', 403);
         }

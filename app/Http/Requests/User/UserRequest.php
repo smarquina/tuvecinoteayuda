@@ -34,8 +34,16 @@ class UserRequest extends ApiRequest {
                 return [
                     'name'                  => 'nullable|string|max:150',
                     'email'                 => 'required|email|max:45|unique:users,email',
+                    'phone'                 => 'required|max:20|unique:users',
                     'password'              => 'required|max:20|min:8|confirmed',
                     'password_confirmation' => 'required|max:20',
+                    'user_type'             => 'required|int',
+                    'address'               => 'required|string|max:191',
+                    'city'                  => 'required|int',
+                    'state'                 => 'required|int',
+                    'zip_code'              => 'required|string|max:5',
+                    'especially_vulnerable' => 'nullable|boolean',
+                    'nearby_areas'          => 'nullable|boolean',
                 ];
                 break;
             case 'PUT':

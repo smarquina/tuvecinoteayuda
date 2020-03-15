@@ -31,7 +31,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string|null                                                                                                    $remember_token
  * @property int                                                                                                            $user_type
  * @property string                                                                                                         $address
- * @property string                                                                                                         $city
+ * @property int                                                                                                            $city
  * @property int                                                                                                            $state
  * @property string                                                                                                         $zip_code
  * @property int                                                                                                            $age
@@ -73,12 +73,28 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     /**
      * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'email', 'email_verified_at',
+        'phone', 'password', 'remember_token',
+        'user_type',
+        'address', 'city', 'state', 'zip_code',
+        'age', 'especially_vulnerable', 'nearby_areas', 'contagion_symptoms', 'contagion_zone',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
      * @ -80,7 +86,7 @@ class User extends BaseModel {
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
         'password', 'remember_token', 'created_at', 'updated_at',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     /**

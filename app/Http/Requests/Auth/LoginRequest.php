@@ -29,7 +29,7 @@ class LoginRequest extends ApiRequest {
      */
     public function rules() {
         return [
-            'email'    => 'required|email|max:45',
+            'phone'    => 'required|regex:/[0-9]{9}/',
             'password' => 'required|max:100',
         ];
     }
