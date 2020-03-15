@@ -42,7 +42,6 @@ class UserRequest extends ApiRequest {
                     'city'                  => 'required|int',
                     'state'                 => 'required|int',
                     'zip_code'              => 'required|string|max:5',
-                    'especially_vulnerable' => 'nullable|boolean',
                     'nearby_areas'          => 'nullable|boolean',
                 ];
                 break;

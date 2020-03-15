@@ -27,7 +27,7 @@ class HelpRequestController extends ApiController
                 return HelpRequest::where('user_id', '=', Auth::id())->get();
 
             case UserType::USER_TYPE_VOLUNTEER:
-                return HelpRequest::where('assigned_user_id')->get();;
+                return HelpRequest::where('assigned_user_id')->where('city', '=', $user->city)->get();;
 
             default:
                 return response('Tipo de usuario no definido', 400);

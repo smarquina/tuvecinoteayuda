@@ -34,11 +34,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property int                                                                                                            $city
  * @property int                                                                                                            $state
  * @property string                                                                                                         $zip_code
- * @property int                                                                                                            $age
- * @property int|null                                                                                                       $especially_vulnerable
  * @property int|null                                                                                                       $nearby_areas
- * @property int                                                                                                            $contagion_symptoms
- * @property int                                                                                                            $contagion_zone
  * @property \Illuminate\Support\Carbon|null                                                                                $created_at
  * @property \Illuminate\Support\Carbon|null                                                                                $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -81,7 +77,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'phone', 'password', 'remember_token',
         'user_type',
         'address', 'city', 'state', 'zip_code',
-        'age', 'especially_vulnerable', 'nearby_areas', 'contagion_symptoms', 'contagion_zone',
+        'nearby_areas',
     ];
 
     /**

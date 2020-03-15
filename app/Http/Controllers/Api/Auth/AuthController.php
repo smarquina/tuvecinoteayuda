@@ -40,7 +40,6 @@ class AuthController extends ApiController
             'city'                  => 'required|int',
             'state'                 => 'required|int',
             'zip_code'              => 'required|string|max:5',
-            'especially_vulnerable' => 'nullable|boolean',
             'nearby_areas'          => 'nullable|boolean',
         ]);
 
@@ -56,7 +55,6 @@ class AuthController extends ApiController
             'city' => $data['city'],
             'state' => $data['state'],
             'zip_code' => $data['zip_code'],
-            'especially_vulnerable' => $data['especially_vulnerable'] ?? null,
             'nearby_areas' => $data['nearby_areas'] ?? null,
         ]);
 
