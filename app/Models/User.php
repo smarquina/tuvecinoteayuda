@@ -11,7 +11,13 @@ namespace App\Models;
 
 use App\Models\Common\BaseModel;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * App\Models\User
@@ -61,35 +67,43 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereZipCode($value)
  * @mixin \Eloquent
  */
-class User extends BaseModel
-{
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, JWTSubject {
 
-    use Notifiable, Authenticatable;
+    use Notifiable, Authenticatable, Authorizable, CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
+     * @ -80,7 +86,7 @@ class User extends BaseModel {
      * @var array
      */
     protected $hidden = [
         'password', 'remember_token',
+        'password', 'remember_token', 'created_at', 'updated_at',
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * @ -91,4 +97,24 @@ class User extends BaseModel {
+     * protected $casts = [
+     * 'email_verified_at' => 'datetime',
+     * ];
      *
-     * @var array
+     *
+     *
+     * /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims() {
+        return [];
+    }
 }

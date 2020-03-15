@@ -14,6 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['api']], function ($api) {
+    /** @var Dingo\Api\Routing\Router $api */
+
+    // Public Routes
+    $api->group(array('prefix' => 'public', 'as' => 'public.'), function ($api) {
+
+        $api->group(array('prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth.'), function ($api) {
+            $api->post('register', 'Auth\AuthController@register');
+            $api->post('login', 'Auth\AuthController@login');
+        });
+    });
+
+    // Private routes
+    $api->group(array('middleware' => ['jwt.auth']), function ($api) {
+        $api->get('user-types', 'User\UserTypeController@index');
+
+        $api->group(array('namespace' => 'HelpRequest'), function ($api) {
+        $api->get('help-request-types', 'HelpRequestTypeController@index');
+
+        $api->get('help-requests', 'HelpRequestController@index');
+        $api->put('help-requests', 'HelpRequestController@put');
+        $api->post('help-requests', 'HelpRequestController@post');
+        });
+    });
+
 });

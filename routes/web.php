@@ -21,10 +21,5 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api)
     $api->post('login', 'Auth\AuthController@login');
     $api->post('logout', 'Auth\AuthController@logout');
 
-    $api->get('user-types', 'User\UserTypeController@index');
-    $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@index');
 
-    $api->get('help-requests', 'HelpRequest\HelpRequestController@index');
-    $api->put('help-requests', 'HelpRequest\HelpRequestController@put');
-    $api->post('help-requests', 'HelpRequest\HelpRequestController@post');
 });
