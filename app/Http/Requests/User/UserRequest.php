@@ -39,8 +39,8 @@ class UserRequest extends ApiRequest {
                     'password_confirmation' => 'required|max:20',
                     'user_type'             => 'required|int',
                     'address'               => 'required|string|max:191',
-                    'city'                  => 'required|int',
-                    'state'                 => 'required|int',
+                    'city'                  => 'required|string',
+                    'state'                 => 'required|string',
                     'zip_code'              => 'required|string|max:5',
                     'nearby_areas'          => 'nullable|boolean',
                 ];
