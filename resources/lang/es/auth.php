@@ -50,7 +50,11 @@ return [
         "invalidEmail" => "El email es inválido.",
         "blocked"      => "El usuario se encuentra bloqueado.",
     ),
-    "logout"          => array(
+    "logout"          => [
         'success' => 'Se ha cerrado sesión',
-    ),
+    ],
+    "user_type"       => [
+        "denied" => "Tipo de usuario no autorizado para esta acción",
+    ],
+
 ];

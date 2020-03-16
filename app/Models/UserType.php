@@ -24,6 +24,7 @@ use App\Models\Common\BaseModel;
  * @mixin \Eloquent
  */
 class UserType extends BaseModel {
+
     const USER_TYPE_REQUESTER = 1;
     const USER_TYPE_VOLUNTEER = 2;
 

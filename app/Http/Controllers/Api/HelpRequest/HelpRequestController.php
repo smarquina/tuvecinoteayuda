@@ -10,78 +10,95 @@
 namespace App\Http\Controllers\Api\HelpRequest;
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Enums\HttpErrors;
+use App\Http\Requests\Help\HelpRequestRequest;
 use App\Models\HelpRequest;
+use App\Models\User;
 use App\Models\UserType;
-use Auth;
+use App\Resources\HelpRequest\HelpRequestResource;
+use App\Resources\HelpRequest\HelpRequestsCollection;
 use Illuminate\Http\Request;
 
-class HelpRequestController extends ApiController
-{
-    public function index()
-    {
-        $user = Auth::user();
+class HelpRequestController extends ApiController {
+
+    /**
+     * HelpRequestController constructor.
+     */
+    public function __construct() {
+        $this->middleware("user.type:" . UserType::USER_TYPE_VOLUNTEER)
+             ->only('accept');
+    }
+
+    /**
+     * List help requests based on user type
+     *
+     * @return HelpRequestsCollection
+     */
+    public function list() {
+        /** @var User $user */
+        $user = \Auth::user();
 
         switch ($user->user_type) {
             case UserType::USER_TYPE_REQUESTER:
-                return HelpRequest::where('user_id', '=', Auth::id())->get();
+                $helpRequests = HelpRequest::whereAssignedUserId(\Auth::id())->get();
+                return new HelpRequestsCollection($helpRequests);
 
             case UserType::USER_TYPE_VOLUNTEER:
-                return HelpRequest::where('assigned_user_id')->where('city', '=', $user->city)->get();
+                $helpRequests = HelpRequest::join('user', 'helrequest.assigned_user_id', 'user.id')
+                                           ->where('user.city', $user->city)
+                                           ->get();
 
+                return new HelpRequestsCollection($helpRequests);
             default:
-                return response('Tipo de usuario no definido', 400);
+                $helpRequests = collect();
+        }
+        return new HelpRequestsCollection($helpRequests);
+    }
+
+    /**
+     * Store new help request.
+     *
+     * @param HelpRequestRequest $request
+     * @return HelpRequestResource|\Illuminate\Http\JsonResponse
+     */
+    public function store(HelpRequestRequest $request) {
+        try {
+            $helpRequest          = new HelpRequest($request->all());
+            $helpRequest->user_id = \Auth::id();
+            $helpRequest->save();
+
+            return new HelpRequestResource($helpRequest);
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, trans('general.model.store.error'));
         }
     }
 
-    public function post(Request $request)
-    {
-        request()->validate([
-            'help_request_type' => 'required',
-            'message' => 'required',
-        ]);
+    /**
+     * User accepts help request.
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return \Illuminate\Http\JsonResponse|HelpRequestResource
+     */
+    public function accept(Request $request, $id) {
+        try {
+            $help_request = HelpRequest::find($id);
 
-        $data = $request->all();
+            if (empty($help_request->assigned_user_id)) {
+                $help_request->assigned_user_id = \Auth::id();
+                $help_request->accepted_at      = now();
+                $help_request->save();
 
-        $check = HelpRequest::create([
-            'user_id' => Auth::id(),
-            'help_request_type' => $data['help_request_type'],
-            'message' => $data['message'],
-        ]);
-
-        if ($check) {
-            return response('', 200);
-        } else {
-            return response('Error al insertar', 400);
-        }
-    }
-
-    public function put(Request $request)
-    {
-        $user = Auth::user();
-
-        if ($user->user_type != UserType::USER_TYPE_VOLUNTEER) {
-            return response('Tipo de usuario no autorizado para esta acción', 403);
-        }
-
-        request()->validate([
-            'help_request_id' => 'required',
-        ]);
-
-        $data = $request->all();
-
-        $help_request = HelpRequest::find($data['help_request_id']);
-
-        if (!empty($help_request->assigned_user_id)) {
-            return response('Petición ya atendida con anterioridad', 400);
-        }
-
-        $help_request->assigned_user_id = Auth::id();
-        $help_request->accepted_at = time();
-
-        if ($help_request->save()) {
-            return response('', 200);
-        } else {
-            return response('Error al actualizar', 400);
+                return new HelpRequestResource($help_request);
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                                'Petición ya atendida con anterioridad');
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('general.model.update.error');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
         }
     }
 }
