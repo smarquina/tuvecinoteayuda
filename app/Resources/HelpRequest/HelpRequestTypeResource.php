@@ -7,7 +7,7 @@
  * Time: 23:58
  */
 
-namespace app\Resources\HelpRequest;
+namespace App\Resources\HelpRequest;
 
 
 use App\Models\HelpRequestType;

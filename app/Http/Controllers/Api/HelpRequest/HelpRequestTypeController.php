@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Api\HelpRequest;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Models\HelpRequestType;
-use app\Resources\HelpRequest\HelpRequestTypeCollection;
+use App\Resources\HelpRequest\HelpRequestTypeCollection;
 
 class HelpRequestTypeController extends ApiController {
 

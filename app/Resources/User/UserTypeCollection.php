@@ -7,7 +7,7 @@
  * Time: 2:45
  */
 
-namespace app\Resources\User;
+namespace App\Resources\User;
 
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
