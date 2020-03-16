@@ -33,16 +33,16 @@ class UserRequest extends ApiRequest {
             case 'POST':
                 return [
                     'name'                  => 'nullable|string|max:150',
-                    'email'                 => 'required|email|max:45|unique:users,email',
                     'phone'                 => 'required|max:20|unique:users,phone',
+                    'email'                 => 'required|email|max:45|unique:users,email',
+                    'user_type_id'          => 'required|int|exists:user_types,id',
+                    'nearby_areas_id'       => 'nullable|exists:nearby_areas,id',
                     'password'              => 'required|max:20|min:8|confirmed',
                     'password_confirmation' => 'required|max:20',
-                    'user_type'             => 'required|int',
                     'address'               => 'required|string|max:191',
                     'city'                  => 'required|string',
                     'state'                 => 'required|string',
                     'zip_code'              => 'required|string|max:5',
-                    'nearby_areas'          => 'nullable|boolean',
                 ];
                 break;
             case 'PUT':

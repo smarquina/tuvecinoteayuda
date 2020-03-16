@@ -103,7 +103,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     protected $casts = [
         'email'             => 'string',
-        'nick'              => 'string',
+        'name'              => 'string',
         'phone'             => 'string',
         'address'           => 'string',
         'city'              => 'string',

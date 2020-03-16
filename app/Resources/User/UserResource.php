@@ -28,8 +28,16 @@ class UserResource extends JsonResource {
         /** @var User $user */
         $user = clone $this;
 
-
         return [
+            'id'             => $user->id,
+            'email'          => $user->email,
+            'name'           => $user->name,
+            'phone'          => $user->phone,
+            'address'        => $user->address,
+            'city'           => $user->city,
+            'zip_code'       => $user->zip_code,
+            'nearby_areas'   => new NearbyAreasResource($user->nearbyAreas),
+            'user_status_id' => new UserStatusResource($user->status),
         ];
     }
 }
