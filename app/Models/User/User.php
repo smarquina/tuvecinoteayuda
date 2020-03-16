@@ -152,10 +152,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     /**
      * Associated asignated help requests.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function assignedHelpRequests() {
-        return $this->hasMany(HelpRequest::class, 'assigned_user_id');
+        return $this->belongsToMany(HelpRequest::class,
+                                    'help_requests_has_assigned_user',
+                                    'user_id',
+                                    'help_request_id');
     }
 
     /**

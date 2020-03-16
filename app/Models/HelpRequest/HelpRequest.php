@@ -16,22 +16,21 @@ use App\Models\User\User;
 /**
  * App\Models\HelpRequest\HelpRequest
  *
- * @property int                                          $id
- * @property int                                          $user_id
- * @property int|null                                     $assigned_user_id
- * @property int                                          $help_request_type_id
- * @property string                                       $message
- * @property \Illuminate\Support\Carbon|null              $accepted_at
- * @property \Illuminate\Support\Carbon|null              $created_at
- * @property \Illuminate\Support\Carbon|null              $updated_at
- * @property-read \App\Models\User\User|null              $assignedUser
- * @property-read \App\Models\HelpRequest\HelpRequestType $type
- * @property-read \App\Models\User\User                   $user
+ * @property int                                                                   $id
+ * @property int                                                                   $user_id
+ * @property int                                                                   $help_request_type_id
+ * @property string                                                                $message
+ * @property \Illuminate\Support\Carbon|null                                       $accepted_at
+ * @property \Illuminate\Support\Carbon|null                                       $created_at
+ * @property \Illuminate\Support\Carbon|null                                       $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\User[] $assignedUser
+ * @property-read int|null                                                         $assigned_user_count
+ * @property-read \App\Models\HelpRequest\HelpRequestType                          $type
+ * @property-read \App\Models\User\User                                            $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereAcceptedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereAssignedUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereHelpRequestTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereId($value)
@@ -105,9 +104,11 @@ class HelpRequest extends BaseModel {
     /**
      * Related assigned user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function assignedUser() {
-        return $this->belongsTo(User::class, 'assigned_user_id');
+        return $this->belongsToMany(User::class, 'help_requests_has_assigned_user',
+                                    'help_request_id',
+                                    'user_id');
     }
 }
