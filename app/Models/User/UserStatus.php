@@ -30,6 +30,10 @@ use App\Models\Common\BaseNameTable;
  */
 class UserStatus extends BaseNameTable {
 
+    const ACTIVE      = 1;
+    const DISABLED    = 2;
+    const DEACTIVATED = 3;
+
     /**
      * The database table used by the model.
      *

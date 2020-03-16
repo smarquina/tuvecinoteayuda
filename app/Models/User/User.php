@@ -79,7 +79,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     protected $fillable = [
         'name', 'email', 'email_verified_at', 'phone', 'password', 'remember_token',
-        'user_type', 'address', 'city', 'zip_code', 'nearby_areas_id',
+        'user_type_id', 'address', 'city', 'zip_code', 'nearby_areas_id',
     ];
 
     /**

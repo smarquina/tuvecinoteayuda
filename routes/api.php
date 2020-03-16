@@ -20,11 +20,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
     /** @var Dingo\Api\Routing\Router $api */
 
     // Public Routes
-    $api->group(array('prefix' => 'public', 'as' => 'public.'), function ($api) {
+    $api->group(array('prefix' => 'public', 'as' => 'public'), function ($api) {
 
-        $api->group(array('prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth.'), function ($api) {
-            $api->post('register', 'AuthController@register');
-            $api->post('login', 'AuthController@login');
+        $api->group(array('prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth'), function ($api) {
+            $api->post('register', 'AuthController@register')->name('register');
+            $api->post('login', 'AuthController@login')->name('login');
         });
 
         $api->get('user-types', 'User\UserTypeController@list');

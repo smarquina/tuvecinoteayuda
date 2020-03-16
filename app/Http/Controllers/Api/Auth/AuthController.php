@@ -14,6 +14,7 @@ use App\Http\Enums\HttpErrors;
 use app\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User\User;
+use App\Models\User\UserStatus;
 use App\Resources\User\UserResource;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -35,12 +36,15 @@ class AuthController extends ApiController {
             $user                 = new User($request->except('password'));
             $user->password       = \Hash::make($request->input('password'));
             $user->remember_token = \Str::random(100);
+            $user->user_status_id = UserStatus::ACTIVE;
             $user->save();
 
             $token = \JWTAuth::fromUser($user);
             return response()->json(array('user' => $user, 'token' => $token));
         } catch (\Exception $exception) {
-            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, trans('auth.login.noToken'));
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('auth.login.noToken');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
         }
     }
 

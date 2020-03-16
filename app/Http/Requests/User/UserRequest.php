@@ -41,7 +41,6 @@ class UserRequest extends ApiRequest {
                     'password_confirmation' => 'required|max:20',
                     'address'               => 'required|string|max:191',
                     'city'                  => 'required|string',
-                    'state'                 => 'required|string',
                     'zip_code'              => 'required|string|max:5',
                 ];
                 break;
@@ -56,5 +55,25 @@ class UserRequest extends ApiRequest {
                 return [];
                 break;
         }
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes() {
+        return [
+            'name'                  => trans('general.attributes.name'),
+            'phone'                 => trans('general.attributes.phone'),
+            'email'                 => trans('general.attributes.email'),
+            'user_type_id'          => "Tipo de usuario",
+            'nearby_areas_id'       => "Zonas",
+            'password'              => trans('general.attributes.password'),
+            'password_confirmation' => "Confirmación de contraseña",
+            'address'               => trans('general.attributes.address'),
+            'city'                  => trans('general.attributes.city'),
+            'zip_code'              => trans('general.attributes.zip_code'),
+        ];
     }
 }

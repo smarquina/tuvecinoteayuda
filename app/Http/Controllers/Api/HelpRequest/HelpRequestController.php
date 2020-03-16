@@ -29,6 +29,17 @@ class HelpRequestController extends ApiController {
              ->only('accept');
     }
 
+    public function pending() {
+        /** @var User $user */
+        $user = \Auth::user();
+
+        $helpRequests = HelpRequest::withCount('assignedUser')
+                                   ->join('user', 'helrequest.assigned_user_id', 'user.id')
+                                   ->where('help_request.assignedUser_count', 0)
+                                   ->where('user.city', $user->city)
+                                   ->get();
+    }
+
     /**
      * List help requests based on user type
      *
@@ -38,17 +49,12 @@ class HelpRequestController extends ApiController {
         /** @var User $user */
         $user = \Auth::user();
 
-        switch ($user->user_type) {
+        switch ($user->user_type_id) {
             case UserType::USER_TYPE_REQUESTER:
-                $helpRequests = HelpRequest::whereAssignedUserId(\Auth::id())->get();
-                return new HelpRequestsCollection($helpRequests);
+                return new HelpRequestsCollection($user->helpRequests);
 
             case UserType::USER_TYPE_VOLUNTEER:
-                $helpRequests = HelpRequest::join('user', 'helrequest.assigned_user_id', 'user.id')
-                                           ->where('user.city', $user->city)
-                                           ->get();
-
-                return new HelpRequestsCollection($helpRequests);
+                return new HelpRequestsCollection($user->assignedHelpRequests);
             default:
                 $helpRequests = collect();
         }
