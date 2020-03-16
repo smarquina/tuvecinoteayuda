@@ -11,10 +11,16 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Models\UserType;
+use app\Resources\User\UserTypeCollection;
 
-class UserTypeController extends ApiController
-{
-    public function index() {
-        return UserType::all();
+class UserTypeController extends ApiController {
+
+    /**
+     * List of all user types.
+     *
+     * @return UserTypeCollection
+     */
+    public function list() {
+        return new UserTypeCollection(UserType::all());
     }
 }

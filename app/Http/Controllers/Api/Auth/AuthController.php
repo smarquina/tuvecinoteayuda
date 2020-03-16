@@ -14,13 +14,8 @@ use App\Http\Enums\HttpErrors;
 use app\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
-
-
-use Illuminate\Http\Request;
-use Validator, Redirect, Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Session;
+use App\Resources\User\UserResource;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 
 /**
@@ -56,20 +51,31 @@ class AuthController extends ApiController {
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function login(LoginRequest $request) {
-        $credentials = $request->only('phone', 'password');
-        if (\Auth::attempt($credentials)) {
-            $user  = Auth::user();
-            $token = \JWTAuth::fromUser($user);
+        try {
+            if (filter_var($request->input("user"), FILTER_VALIDATE_EMAIL)) {
+                /** @var User $user */
+                $user = User::whereEmail($request->input("user"))->firstOrFail();
+            } else {
+                /** @var User $user */
+                $user = User::wherePhone($request->input("user"))->firstOrFail();
+            }
 
-            return response()->json(['token' => $token]);
-        } else {
-            return $this->responseWithError(HttpErrors::HTTP_UNAUTHORIZED, trans('auth.login.invalidCred'));
+            $credentials = ['email' => $user->email, 'password' => $request->input('password')];
+            if (!$token = auth()->guard('api')->attempt($credentials)) {
+                return $this->responseWithError(HttpErrors::CANT_COMPLETE_REQUEST, trans('auth.login.invalidCred'));
+            } else {
+                //Need once to bypass the resource conversion
+                \Auth::onceUsingId($user->id);
+
+                return response()->json(['token' => $token,
+                                         'user'  => new UserResource($user),
+                                        ]);
+            }
+        } catch (JWTException $e) {
+            // something went wrong whilst attempting to encode the token
+            return $this->responseWithError(HttpErrors::CANT_COMPLETE_REQUEST, trans('auth.login.noToken'));
+        } catch (\Exception $exception) {
+            return $this->responseWithError(HttpErrors::CANT_COMPLETE_REQUEST, trans('auth.login.userNoExist'));
         }
-    }
-
-    public function logout() {
-        Session::flush();
-        Auth::logout();
-        return response('', 200);
     }
 }

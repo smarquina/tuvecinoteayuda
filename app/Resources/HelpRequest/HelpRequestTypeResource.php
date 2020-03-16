@@ -18,7 +18,7 @@ class HelpRequestTypeResource extends JsonResource {
     /**
      * Transform the resource into an array.
      *
-     * @OA\Schema(schema="UserResource", type="object")
+     * @OA\Schema(schema="HelpRequestTypeResource", type="object")
      *
      * @param \Illuminate\Http\Request $request
      * @return array

@@ -87,7 +87,26 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'password', 'remember_token', 'created_at', 'updated_at',
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'email_verified_at',
+    ];
+
     protected $casts = [
+        'email'             => 'string',
+        'nick'              => 'string',
+        'phone'             => 'string',
+        'address'           => 'string',
+        'city'              => 'string',
+        'zip_code'          => 'string',
+        'nearby_areas'      => 'boolean',
+        'state'             => 'integer',
         'email_verified_at' => 'datetime',
     ];
 
@@ -108,5 +127,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getJWTCustomClaims() {
         return [];
+    }
+
+    /**
+     * Related type.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type() {
+        return $this->belongsTo(UserType::class, 'user_type');
     }
 }

@@ -11,10 +11,16 @@ namespace App\Http\Controllers\Api\HelpRequest;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Models\HelpRequestType;
+use app\Resources\HelpRequest\HelpRequestTypeCollection;
 
-class HelpRequestTypeController extends ApiController
-{
-    public function index() {
-        return HelpRequestType::all();
+class HelpRequestTypeController extends ApiController {
+
+    /**
+     * List of all request types.
+     *
+     * @return HelpRequestTypeCollection
+     */
+    public function list() {
+        return new HelpRequestTypeCollection(HelpRequestType::all());
     }
 }

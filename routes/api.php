@@ -27,8 +27,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
             $api->post('login', 'AuthController@login');
         });
 
-        $api->get('user-types', 'User\UserTypeController@index');
-        $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@index');
+        $api->get('user-types', 'User\UserTypeController@list');
+        $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@list');
     });
 
     $api->get('users', 'User\UserController@index');
