@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
 use app\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\User\UserRequest;
-use App\Models\User;
+use App\Models\User\User;
 use App\Resources\User\UserResource;
 use Tymon\JWTAuth\Exceptions\JWTException;
 

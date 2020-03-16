@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Api\ApiController;
-use App\Models\UserType;
+use App\Models\User\UserType;
 use App\Resources\User\UserTypeCollection;
 
 class UserTypeController extends ApiController {

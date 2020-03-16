@@ -10,7 +10,7 @@
 namespace App\Resources\HelpRequest;
 
 
-use App\Models\HelpRequest;
+use App\Models\HelpRequest\HelpRequest;
 use App\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 

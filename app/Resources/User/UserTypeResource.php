@@ -10,7 +10,7 @@
 namespace App\Resources\User;
 
 
-use App\Models\UserType;
+use App\Models\User\UserType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserTypeResource extends JsonResource {

@@ -10,7 +10,7 @@
 namespace App\Resources\HelpRequest;
 
 
-use App\Models\HelpRequestType;
+use App\Models\HelpRequest\HelpRequestType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class HelpRequestTypeResource extends JsonResource {

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Api\ApiController;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 
 /**

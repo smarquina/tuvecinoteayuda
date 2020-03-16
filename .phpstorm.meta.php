@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2020-03-15 23:01:22.
+    * Generated on 2020-03-16 11:33:10.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -58,6 +58,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -245,6 +246,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -432,6 +434,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -619,6 +622,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -806,6 +810,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -993,6 +998,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -1180,6 +1186,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -1367,6 +1374,7 @@ namespace PHPSTORM_META {
         'api.router' => \Dingo\Api\Routing\Router::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
+        'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
