@@ -47,7 +47,7 @@ class UserController extends ApiController {
             $user->save();
 
             return response()->json(['msg'  => trans('general.model.update.correct', ['value' => $user->name]),
-                                     'data' => new UserResource($user)]);
+                                     'user' => new UserResource($user)]);
 
         } catch (\Exception $exception) {
             \Log::error($exception);
