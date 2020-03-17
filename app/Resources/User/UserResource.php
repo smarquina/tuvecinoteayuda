@@ -33,12 +33,12 @@ class UserResource extends JsonResource {
             'email'          => $user->email,
             'name'           => $user->name,
             'phone'          => $user->phone,
-            'address'        => $user->address,
-            'city'           => $user->city,
-            'state'          => $user->state,
-            'zip_code'       => $user->zip_code,
+            'address'        => $this->when($user->id == \Auth::id(), $user->address),
+            'city'           => $this->when($user->id == \Auth::id(), $user->city),
+            'state'          => $this->when($user->id == \Auth::id(), $user->state),
+            'zip_code'       => $this->when($user->id == \Auth::id(), $user->zip_code),
             'nearby_areas'   => new NearbyAreasResource($user->nearbyAreas),
-            'user_status_id' => new UserStatusResource($user->status),
+            'user_status_id' => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
         ];
     }
 }
