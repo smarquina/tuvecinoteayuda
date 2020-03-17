@@ -39,6 +39,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property \Illuminate\Support\Carbon|null                                                                                $email_verified_at
  * @property \Illuminate\Support\Carbon|null                                                                                $created_at
  * @property \Illuminate\Support\Carbon|null                                                                                $updated_at
+ * @property string                                                                                                         $state
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\HelpRequest\HelpRequest[]                            $assignedHelpRequests
  * @property-read int|null                                                                                                  $assigned_help_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\HelpRequest\HelpRequest[]                            $helpRequests
@@ -66,6 +67,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereUserStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereUserTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereZipCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereState($value)
  * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, JWTSubject {
@@ -79,7 +81,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     protected $fillable = [
         'name', 'email', 'email_verified_at', 'phone', 'password', 'remember_token',
-        'user_type_id', 'address', 'city', 'zip_code', 'nearby_areas_id',
+        'user_type_id', 'address', 'city', 'state', 'zip_code', 'nearby_areas_id',
     ];
 
     /**
@@ -107,6 +109,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'phone'             => 'string',
         'address'           => 'string',
         'city'              => 'string',
+        'state'             => 'string',
         'zip_code'          => 'string',
         'nearby_areas_id'   => 'boolean',
         'user_status_id'    => 'integer',

@@ -29,27 +29,31 @@ class UserRequest extends ApiRequest {
      * @return array
      */
     public function rules() {
+
+        $rules = [
+            'name'                  => 'required|string|max:150',
+            'user_type_id'          => 'required|int|exists:user_types,id',
+            'nearby_areas_id'       => 'nullable|exists:nearby_areas,id',
+            'password'              => 'required|max:20|min:8|confirmed',
+            'password_confirmation' => 'required|max:20',
+            'address'               => 'required|string|max:191',
+            'city'                  => 'required|string|max:20',
+            'state'                 => 'required|string|max:20',
+            'zip_code'              => 'required|string|max:5',
+        ];
+
         switch ($this->method()) {
             case 'POST':
-                return [
-                    'name'                  => 'nullable|string|max:150',
-                    'phone'                 => 'required|max:20|unique:users,phone',
-                    'email'                 => 'required|email|max:45|unique:users,email',
-                    'user_type_id'          => 'required|int|exists:user_types,id',
-                    'nearby_areas_id'       => 'nullable|exists:nearby_areas,id',
-                    'password'              => 'required|max:20|min:8|confirmed',
-                    'password_confirmation' => 'required|max:20',
-                    'address'               => 'required|string|max:191',
-                    'city'                  => 'required|string',
-                    'zip_code'              => 'required|string|max:5',
-                ];
+                return array_merge($rules, [
+                    'phone' => 'required|max:20|unique:users,phone',
+                    'email' => 'required|email|max:45|unique:users,email',
+                ]);
                 break;
             case 'PUT':
-                return [
-                    'name'  => 'required|string|max:150',
+                return array_merge($rules, [
                     'email' => 'required|email|max:45|unique:users,email,' . \Auth::id(),
                     'phone' => 'required|max:20|unique:users,phone,' . \Auth::id(),
-                ];
+                ]);
                 break;
             default:
                 return [];

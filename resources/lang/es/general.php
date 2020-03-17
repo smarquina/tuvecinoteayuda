@@ -53,6 +53,7 @@ return ['bool'       => ['yes' => 'Si',
             'lang'        => 'Idioma',
             'image'       => 'Imagen',
             'city'        => 'Ciudad',
+            'state'       => 'Provincia',
             'address'     => 'Dirección',
             'zip_code'    => 'C.P.',
 
