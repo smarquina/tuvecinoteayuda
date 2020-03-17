@@ -29,16 +29,16 @@ class UserResource extends JsonResource {
         $user = clone $this;
 
         return [
-            'id'             => $user->id,
-            'email'          => $user->email,
-            'name'           => $user->name,
-            'phone'          => $user->phone,
-            'address'        => $this->when($user->id == \Auth::id(), $user->address),
-            'city'           => $this->when($user->id == \Auth::id(), $user->city),
-            'state'          => $this->when($user->id == \Auth::id(), $user->state),
-            'zip_code'       => $this->when($user->id == \Auth::id(), $user->zip_code),
-            'nearby_areas'   => new NearbyAreasResource($user->nearbyAreas),
-            'user_status_id' => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
+            'id'              => $user->id,
+            'email'           => $user->email,
+            'name'            => $user->name,
+            'phone'           => $user->phone,
+            'address'         => $this->when($user->id == \Auth::id(), $user->address),
+            'city'            => $this->when($user->id == \Auth::id(), $user->city),
+            'state'           => $this->when($user->id == \Auth::id(), $user->state),
+            'zip_code'        => $this->when($user->id == \Auth::id(), $user->zip_code),
+            'nearby_areas_id' => new NearbyAreasResource($user->nearbyAreas),
+            'user_status_id'  => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
         ];
     }
 }
