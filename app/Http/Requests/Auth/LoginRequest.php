@@ -7,7 +7,7 @@
  * Time: 13:08
  */
 
-namespace app\Http\Requests\Auth;
+namespace App\Http\Requests\Auth;
 
 
 use App\Http\Requests\ApiRequest;
@@ -29,7 +29,7 @@ class LoginRequest extends ApiRequest {
      */
     public function rules() {
         return [
-            'phone'    => 'required|regex:/[0-9]{9}/',
+            'user'     => 'required|max:50|string', //regex:/[0-9]{9}/
             'password' => 'required|max:100',
         ];
     }

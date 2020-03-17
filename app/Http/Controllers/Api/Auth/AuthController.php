@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
-use app\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User\User;
 use App\Models\User\UserStatus;
@@ -65,15 +65,15 @@ class AuthController extends ApiController {
             }
 
             $credentials = ['email' => $user->email, 'password' => $request->input('password')];
-            if (!$token = auth()->guard('api')->attempt($credentials)) {
-                return $this->responseWithError(HttpErrors::CANT_COMPLETE_REQUEST, trans('auth.login.invalidCred'));
-            } else {
+            if (\Auth::attempt($credentials)) {
                 //Need once to bypass the resource conversion
                 \Auth::onceUsingId($user->id);
 
-                return response()->json(['token' => $token,
+                return response()->json(['token' => \JWTAuth::fromUser($user),
                                          'user'  => new UserResource($user),
                                         ]);
+            } else {
+                return $this->responseWithError(HttpErrors::CANT_COMPLETE_REQUEST, trans('auth.login.invalidCred'));
             }
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
