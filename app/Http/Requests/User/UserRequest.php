@@ -31,11 +31,12 @@ class UserRequest extends ApiRequest {
     public function rules() {
 
         $rules = [
-            'nearby_areas_id' => 'required|exists:nearby_areas,id',
-            'address'         => 'required|string|max:191',
-            'city'            => 'required|string|max:20',
-            'state'           => 'required|string|max:20',
-            'zip_code'        => 'required|string|max:5',
+            'nearby_areas_id'   => 'exists:nearby_areas,id',
+            'activity_areas_id' => 'exists:nearby_areas,id',
+            'address'           => 'required|string|max:191',
+            'city'              => 'required|string|max:20',
+            'state'             => 'required|string|max:20',
+            'zip_code'          => 'required|string|max:5',
         ];
 
         switch ($this->method()) {
