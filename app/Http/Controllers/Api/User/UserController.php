@@ -13,7 +13,10 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User\User;
+use App\Models\User\UserType;
+use App\Resources\User\UserCollection;
 use App\Resources\User\UserResource;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Class UserController
@@ -52,5 +55,15 @@ class UserController extends ApiController {
 
             return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
         }
+    }
+
+    /**
+     * List help requests based on user type
+     *
+     * @return HelpRequestsCollection
+     */
+    public function associations() {
+        $associations = User::whereUserTypeId(UserType::USER_TYPE_ASSOCIATION)->get();
+        return new UserCollection($associations);
     }
 }

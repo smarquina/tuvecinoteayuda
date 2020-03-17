@@ -29,6 +29,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
 
         $api->get('user-types', 'User\UserTypeController@list');
         $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@list');
+        $api->get('associatons', 'User\UserController@associations');
     });
 
     // Private routes
