@@ -31,7 +31,7 @@ class HelpRequestResource extends JsonResource {
         return [
             'id'                => $helpRequest->id,
             'user'              => new UserResource($helpRequest->user),
-            'help_request_type' => new HelpRequestResource($helpRequest->type),
+            'help_request_type' => new HelpRequestTypeResource($helpRequest->type),
             'message'           => $helpRequest->message,
             'assigned_user_id'  => new UserResource($helpRequest->user),
             'accepted_at'       => $helpRequest->accepted_at ?? null,

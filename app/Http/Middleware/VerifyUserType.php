@@ -15,7 +15,7 @@ class VerifyUserType {
      * @return mixed
      */
     public function handle($request, Closure $next, ...$userTypes) {
-        if (\Auth::check() && in_array(\Auth::user()->user_type, $userTypes)) {
+        if (\Auth::check() && in_array(\Auth::user()->user_type_id, $userTypes)) {
             return $next($request);
         } else {
             $code = HttpErrors::HTTP_FORBIDDEN;

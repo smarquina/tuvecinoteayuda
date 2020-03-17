@@ -32,8 +32,8 @@ class HelpRequestRequest extends ApiRequest {
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'help_request_type' => 'required|integer|exists:help_request_types,id',
-                    'message'           => 'required|string|max:3000',
+                    'help_request_type_id' => 'required|integer|exists:help_request_types,id',
+                    'message'              => 'required|string|max:3000',
                 ];
                 break;
             case 'PUT':
