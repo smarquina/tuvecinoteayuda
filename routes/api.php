@@ -31,8 +31,6 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
         $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@list');
     });
 
-    $api->get('users', 'User\UserController@index');
-
     // Private routes
     $api->group(array('middleware' => ['jwt.auth']), function ($api) {
         $api->get('user-types', 'User\UserTypeController@index');
@@ -45,6 +43,12 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
             $api->post('help-requests/accept/{id}', 'HelpRequestController@accept');
             $api->get('help-requests/pending', 'HelpRequestController@pending');
         });
+
+        $api->group(array('namespace' => 'User', 'as' => 'user', 'prefix' => 'user'), function ($api) {
+            $api->get('profile', 'UserController@profile');
+            $api->put('update', 'UserController@update');
+        });
+
     });
 
 });

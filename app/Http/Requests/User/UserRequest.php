@@ -31,22 +31,22 @@ class UserRequest extends ApiRequest {
     public function rules() {
 
         $rules = [
-            'name'                  => 'required|string|max:150',
-            'user_type_id'          => 'required|int|exists:user_types,id',
-            'nearby_areas_id'       => 'nullable|exists:nearby_areas,id',
-            'password'              => 'required|max:20|min:8|confirmed',
-            'password_confirmation' => 'required|max:20',
-            'address'               => 'required|string|max:191',
-            'city'                  => 'required|string|max:20',
-            'state'                 => 'required|string|max:20',
-            'zip_code'              => 'required|string|max:5',
+            'name'            => 'required|string|max:150',
+            'nearby_areas_id' => 'required|exists:nearby_areas,id',
+            'address'         => 'required|string|max:191',
+            'city'            => 'required|string|max:20',
+            'state'           => 'required|string|max:20',
+            'zip_code'        => 'required|string|max:5',
         ];
 
         switch ($this->method()) {
             case 'POST':
                 return array_merge($rules, [
-                    'phone' => 'required|max:20|unique:users,phone',
-                    'email' => 'required|email|max:45|unique:users,email',
+                    'phone'                 => 'required|max:20|unique:users,phone',
+                    'email'                 => 'required|email|max:45|unique:users,email',
+                    'password'              => 'required|max:20|min:8|confirmed',
+                    'password_confirmation' => 'required|max:20',
+                    'user_type_id'          => 'required|int|exists:user_types,id',
                 ]);
                 break;
             case 'PUT':

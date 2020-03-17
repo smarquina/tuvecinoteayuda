@@ -10,29 +10,46 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Enums\HttpErrors;
+use App\Http\Requests\User\UserRequest;
 use App\Models\User\User;
-use Illuminate\Http\Request;
+use App\Resources\User\UserResource;
 
 /**
  * Class UserController
  * @package App\Http\Controllers\Api
  */
-class UserController extends ApiController
-{
-    public function index(Request $request)
-    {
-        $data = $request->all();
+class UserController extends ApiController {
 
-        if ($data['code'] == 'iZNYRY6x2N0QauxdTwDHM1D32FZOIbGnRntiSDksmfUDaQuDWxsYGWgMBLyL') {
-            return User::all();
-        } else {
-            return response('', 404);
-        }
+    /**
+     * Get user profile.
+     *
+     * @return UserResource
+     */
+    public function profile() {
+        return new UserResource(\Auth::user());
     }
 
-    public function show($id)
-    {
-        return response('', 404);
-        //return User::findOrFail($id);
+    /**
+     * Update user resource with given params.
+     *
+     * @param UserRequest $request
+     * @return UserResource|\Illuminate\Http\JsonResponse
+     */
+    public function update(UserRequest $request) {
+        try {
+            /** @var User $user */
+            $user = \Auth::user();
+            $user->update($request->except(['password', 'user_type_id']));
+            $user->save();
+
+            return new UserResource($user);
+
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('general.model.update.error');
+
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
     }
 }
