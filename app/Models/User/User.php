@@ -28,6 +28,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property int                                                                                                            $user_type_id
  * @property int                                                                                                            $user_status_id
  * @property string                                                                                                         $name
+ * @property string                                                                                                         $corporate_name
+ * @property string                                                                                                         $cif
  * @property string                                                                                                         $email
  * @property string                                                                                                         $phone
  * @property string                                                                                                         $password
@@ -35,7 +37,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string                                                                                                         $address
  * @property string                                                                                                         $city
  * @property string                                                                                                         $zip_code
- * @property bool                                                                                                           $nearby_areas_id
+ * @property integer                                                                                                        $nearby_areas_id
+ * @property integer                                                                                                        $activity_areas_id
  * @property \Illuminate\Support\Carbon|null                                                                                $email_verified_at
  * @property \Illuminate\Support\Carbon|null                                                                                $created_at
  * @property \Illuminate\Support\Carbon|null                                                                                $updated_at
@@ -45,6 +48,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\HelpRequest\HelpRequest[]                            $helpRequests
  * @property-read int|null                                                                                                  $help_requests_count
  * @property-read \App\Models\User\NearbyAreas                                                                              $nearbyAreas
+ * @property-read \App\Models\User\ActivityAreas                                                                            $activityAreas
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null                                                                                                  $notifications_count
  * @property-read \App\Models\User\UserStatus                                                                               $status
@@ -82,6 +86,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $fillable = [
         'name', 'email', 'email_verified_at', 'phone', 'password', 'remember_token',
         'user_type_id', 'address', 'city', 'state', 'zip_code', 'nearby_areas_id',
+        'corporate_name', 'cif', 'activity_areas_id',
     ];
 
     /**
@@ -106,12 +111,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $casts = [
         'email'             => 'string',
         'name'              => 'string',
+        'corporate_name'    => 'string',
+        'cif'               => 'string',
         'phone'             => 'string',
         'address'           => 'string',
         'city'              => 'string',
         'state'             => 'string',
         'zip_code'          => 'string',
-        'nearby_areas_id'   => 'boolean',
+        'nearby_areas_id'   => 'integer',
+        'activity_areas_id' => 'integer',
         'user_status_id'    => 'integer',
         'email_verified_at' => 'datetime',
     ];
@@ -141,6 +149,15 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function nearbyAreas() {
         return $this->belongsTo(NearbyAreas::class, 'nearby_areas_id');
+    }
+
+    /**
+     * Related activity areas.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function activityAreas() {
+        return $this->belongsTo(ActivityAreas::class, 'activity_areas_id');
     }
 
     /**

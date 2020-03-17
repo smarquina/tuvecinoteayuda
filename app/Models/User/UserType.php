@@ -30,8 +30,9 @@ use App\Models\Common\BaseNameTable;
  */
 class UserType extends BaseNameTable {
 
-    const USER_TYPE_REQUESTER = 1;
-    const USER_TYPE_VOLUNTEER = 2;
+    const USER_TYPE_REQUESTER   = 1;
+    const USER_TYPE_VOLUNTEER   = 2;
+    const USER_TYPE_ASSOCIATION = 3;
 
 
     /**
