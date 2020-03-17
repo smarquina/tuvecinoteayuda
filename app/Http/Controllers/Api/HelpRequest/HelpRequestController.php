@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
 use App\Http\Requests\Help\HelpRequestRequest;
 use App\Models\HelpRequest\HelpRequest;
+use App\Models\User\NearbyAreas;
 use App\Models\User\User;
 use App\Models\User\UserType;
 use App\Resources\HelpRequest\HelpRequestResource;
@@ -29,15 +30,33 @@ class HelpRequestController extends ApiController {
              ->only('accept');
     }
 
+    /**
+     * list with pending help requests.
+     *
+     * @return HelpRequestsCollection
+     */
     public function pending() {
         /** @var User $user */
         $user = \Auth::user();
 
-        $helpRequests = HelpRequest::withCount('assignedUser')
-                                   ->join('user', 'helrequest.assigned_user_id', 'user.id')
-                                   ->where('help_request.assignedUser_count', 0)
-                                   ->where('user.city', $user->city)
-                                   ->get();
+        $helpRequests = HelpRequest::withCount(['assignedUser', 'user'])
+                                   ->get()
+                                   ->where('assigned_user_count', 0);
+
+        switch ($user->nearby_areas_id) {
+            case NearbyAreas::MY_BUILDING:
+            case NearbyAreas::MY_NEIGHBORHOOD:
+                $helpRequests = $helpRequests->where('user.zip_code', $user->zip_code);
+                break;
+            case NearbyAreas::MY_CITY:
+                $helpRequests = $helpRequests->where('user.city', $user->city);
+                break;
+            case NearbyAreas::CITY_AND_SURROUNDINGS:
+                $helpRequests = $helpRequests->where('user.state', $user->state);
+                break;
+        }
+
+        return new HelpRequestsCollection($helpRequests);
     }
 
     /**
@@ -52,7 +71,6 @@ class HelpRequestController extends ApiController {
         switch ($user->user_type_id) {
             case UserType::USER_TYPE_REQUESTER:
                 return new HelpRequestsCollection($user->helpRequests);
-
             case UserType::USER_TYPE_VOLUNTEER:
                 return new HelpRequestsCollection($user->assignedHelpRequests);
             default:
@@ -89,18 +107,13 @@ class HelpRequestController extends ApiController {
      */
     public function accept(Request $request, $id) {
         try {
-            $help_request = HelpRequest::find($id);
+            $help_request = HelpRequest::findOrFail($id);
 
-            if (empty($help_request->assigned_user_id)) {
-                $help_request->assigned_user_id = \Auth::id();
-                $help_request->accepted_at      = now();
-                $help_request->save();
+            $help_request->assignedUser()->syncWithoutDetaching(\Auth::user());
+            $help_request->accepted_at = now();
+            $help_request->save();
 
-                return new HelpRequestResource($help_request);
-            } else {
-                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
-                                                'Petición ya atendida con anterioridad');
-            }
+            return new HelpRequestResource($help_request);
         } catch (\Exception $exception) {
             \Log::error($exception);
             $msg = config('app.debug') ? $exception->getMessage() : trans('general.model.update.error');

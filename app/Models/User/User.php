@@ -153,7 +153,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     }
 
     /**
-     * Associated asignated help requests.
+     * Associated assigned help requests.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

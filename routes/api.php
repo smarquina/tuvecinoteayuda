@@ -43,6 +43,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
             $api->get('help-requests', 'HelpRequestController@list');
             $api->post('help-requests', 'HelpRequestController@store');
             $api->post('help-requests/accept/{id}', 'HelpRequestController@accept');
+            $api->get('help-requests/pending', 'HelpRequestController@pending');
         });
     });
 

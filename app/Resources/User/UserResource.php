@@ -35,6 +35,7 @@ class UserResource extends JsonResource {
             'phone'          => $user->phone,
             'address'        => $user->address,
             'city'           => $user->city,
+            'state'          => $user->state,
             'zip_code'       => $user->zip_code,
             'nearby_areas'   => new NearbyAreasResource($user->nearbyAreas),
             'user_status_id' => new UserStatusResource($user->status),

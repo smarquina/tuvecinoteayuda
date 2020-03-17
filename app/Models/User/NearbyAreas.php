@@ -31,6 +31,11 @@ use App\Models\Common\BaseNameTable;
  */
 class NearbyAreas extends BaseNameTable {
 
+    const MY_BUILDING           = 1;
+    const MY_NEIGHBORHOOD       = 2;
+    const MY_CITY               = 3;
+    const CITY_AND_SURROUNDINGS = 4;
+
     /**
      * The database table used by the model.
      *
