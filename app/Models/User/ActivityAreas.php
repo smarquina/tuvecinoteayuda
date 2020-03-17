@@ -33,7 +33,6 @@ class ActivityAreas extends BaseNameTable {
     const LOCAL     = 1;
     const STATE     = 2;
     const NATIONAL  = 3;
-    const N_A       = 99;
 
     /**
      * The database table used by the model.

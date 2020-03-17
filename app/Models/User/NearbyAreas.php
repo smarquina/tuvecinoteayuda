@@ -35,7 +35,6 @@ class NearbyAreas extends BaseNameTable {
     const MY_NEIGHBORHOOD       = 2;
     const MY_CITY               = 3;
     const CITY_AND_SURROUNDINGS = 4;
-    const N_A                   = 99;
 
     /**
      * The database table used by the model.

@@ -31,8 +31,8 @@ class UserRequest extends ApiRequest {
     public function rules() {
 
         $rules = [
-            'nearby_areas_id'   => 'required|exists:nearby_areas,id',
-            'activity_areas_id' => 'required|exists:nearby_areas,id',
+            'nearby_areas_id'   => 'nullable|exists:nearby_areas,id',
+            'activity_areas_id' => 'nullable|exists:nearby_areas,id',
             'address'           => 'required|string|max:191',
             'city'              => 'required|string|max:20',
             'state'             => 'required|string|max:20',
@@ -48,8 +48,8 @@ class UserRequest extends ApiRequest {
                     'password'              => 'required|max:20|min:8|confirmed',
                     'password_confirmation' => 'required|max:20',
                     'user_type_id'          => 'required|int|exists:user_types,id',
-                    'corporate_name'        => 'required|string|max:150',
-                    'cif'                   => 'required|string|max:15',
+                    'corporate_name'        => 'string|max:150',
+                    'cif'                   => 'string|max:15',
                 ]);
                 break;
             case 'PUT':
