@@ -30,9 +30,10 @@ use App\Models\Common\BaseNameTable;
  */
 class ActivityAreas extends BaseNameTable {
 
-    const LOCAL     = 1;
-    const STATE     = 2;
-    const NATIONAL  = 3;
+    const N_A        = 1;
+    const LOCAL     = 2;
+    const STATE     = 3;
+    const NATIONAL  = 4;
 
     /**
      * The database table used by the model.

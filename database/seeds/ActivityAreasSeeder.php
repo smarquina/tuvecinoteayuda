@@ -11,7 +11,8 @@ class ActivityAreasSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        collect(['Local',
+        collect(['No aplica',
+                 'Local',
                  'Provincial',
                  'Nacional',
                 ])

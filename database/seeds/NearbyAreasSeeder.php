@@ -11,7 +11,8 @@ class NearbyAreasSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        collect(['Sólo a mis vecinos',
+        collect(['No aplica',
+                 'Sólo a mis vecinos',
                  'Sólo en mi barrio',
                  'Sólo en mi ciudad',
                  'Mi ciudad y proximidades',
