@@ -31,7 +31,6 @@ class UserRequest extends ApiRequest {
     public function rules() {
 
         $rules = [
-            'name'            => 'required|string|max:150',
             'nearby_areas_id' => 'required|exists:nearby_areas,id',
             'address'         => 'required|string|max:191',
             'city'            => 'required|string|max:20',
@@ -42,6 +41,7 @@ class UserRequest extends ApiRequest {
         switch ($this->method()) {
             case 'POST':
                 return array_merge($rules, [
+                    'name'            => 'required|string|max:150',
                     'phone'                 => 'required|max:20|unique:users,phone',
                     'email'                 => 'required|email|max:45|unique:users,email',
                     'password'              => 'required|max:20|min:8|confirmed',
@@ -51,8 +51,8 @@ class UserRequest extends ApiRequest {
                 break;
             case 'PUT':
                 return array_merge($rules, [
-                    'email' => 'required|email|max:45|unique:users,email,' . \Auth::id(),
-                    'phone' => 'required|max:20|unique:users,phone,' . \Auth::id(),
+//                    'email' => 'required|email|max:45|unique:users,email,' . \Auth::id(),
+//                    'phone' => 'required|max:20|unique:users,phone,' . \Auth::id(),
                 ]);
                 break;
             default:

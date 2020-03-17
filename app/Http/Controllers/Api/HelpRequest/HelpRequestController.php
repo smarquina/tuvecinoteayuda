@@ -109,7 +109,7 @@ class HelpRequestController extends ApiController {
         try {
             $help_request = HelpRequest::findOrFail($id);
 
-            $help_request->assignedUser()->syncWithoutDetaching(\Auth::user());
+            $help_request->assignedUser()->syncWithoutDetaching([\Auth::id()]);
             $help_request->accepted_at = now();
             $help_request->save();
 

@@ -40,10 +40,11 @@ class UserController extends ApiController {
         try {
             /** @var User $user */
             $user = \Auth::user();
-            $user->update($request->except(['password', 'user_type_id']));
+            $user->update($request->only(['nearby_areas_id', 'address', 'city', 'state', 'zip_code']));
             $user->save();
 
-            return new UserResource($user);
+            return response()->json(['msg'  => trans('general.model.update.correct', ['value' => $user->name]),
+                                     'data' => new UserResource($user)]);
 
         } catch (\Exception $exception) {
             \Log::error($exception);
