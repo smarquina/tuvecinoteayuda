@@ -11,6 +11,7 @@ namespace App\Resources\User;
 
 
 use App\Models\User\User;
+use App\Models\User\UserType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource {
@@ -26,23 +27,25 @@ class UserResource extends JsonResource {
      */
     public function toArray($request) {
         /** @var User $user */
-        $user = clone $this;
+        $user           = clone $this;
+        $is_association = $user->user_type_id == UserType::USER_TYPE_ASSOCIATION;
 
         return [
             'id'                => $user->id,
             'email'             => $user->email,
             'name'              => $user->name,
-            'user_type_id'      => $user->user_type_id,
-            'corporate_name'    => $user->corporate_name,
-            'cif'               => $user->cif,
+            'user_type_id'      => new UserTypeResource($user->type),
+            'corporate_name'    => $this->when($is_association, $user->corporate_name),
+            'cif'               => $this->when($is_association, $user->cif),
             'phone'             => $user->phone,
             'address'           => $this->when($user->id == \Auth::id(), $user->address),
             'city'              => $this->when($user->id == \Auth::id(), $user->city),
             'state'             => $this->when($user->id == \Auth::id(), $user->state),
             'zip_code'          => $this->when($user->id == \Auth::id(), $user->zip_code),
             'nearby_areas_id'   => new NearbyAreasResource($user->nearbyAreas),
-            'activity_areas_id' => new ActivityAreasResource($user->activityAreas),
+            'activity_areas_id' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
             'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
+            'associations'      => new UserCollection($user->associations),
         ];
     }
 }

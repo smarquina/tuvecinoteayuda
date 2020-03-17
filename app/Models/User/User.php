@@ -53,6 +53,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read int|null                                                                                                  $notifications_count
  * @property-read \App\Models\User\UserStatus                                                                               $status
  * @property-read \App\Models\User\UserType                                                                                 $type
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\User[]                                          $associations
+ * @property-read int|null                                                                                                  $associations_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User query()
@@ -72,6 +74,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereUserTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereZipCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereActivityAreasId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereCif($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereCorporateName($value)
  * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, JWTSubject {
@@ -179,6 +184,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                                     'help_requests_has_assigned_user',
                                     'user_id',
                                     'help_request_id');
+    }
+
+    /**
+     * Associated associations.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function associations() {
+        return $this->belongsToMany(User::class,
+                                    'users_has_users',
+                                    'user_id',
+                                    'user_id_assoc');
     }
 
     /**

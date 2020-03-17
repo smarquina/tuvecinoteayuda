@@ -27,9 +27,12 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
             $api->post('login', 'AuthController@login')->name('login');
         });
 
-        $api->get('user-types', 'User\UserTypeController@list');
         $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@list');
-        $api->get('associatons', 'User\UserController@associations');
+
+        $api->group(array('namespace' => 'User'), function ($api) {
+            $api->get('user-types', 'UserTypeController@list');
+            $api->get('associatons', 'UserController@associations');
+        });
     });
 
     // Private routes
