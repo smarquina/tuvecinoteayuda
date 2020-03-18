@@ -10,17 +10,28 @@
 namespace App\Resources\User;
 
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\User\User;
+use App\Resources\ApiCollection;
 
-class UserCollection extends ResourceCollection {
+class UserCollection extends ApiCollection {
 
     /**
      * Transform the resource collection into an array.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return array|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function toArray($request) {
-        return UserResource::collection($this->collection);
+
+        if ($this->resume) {
+            $this->collection->transform(
+                function (User $user) {
+                    return (new UserResource($user, $this->resume))->additional($this->additional);
+                });
+
+            return parent::toArray($request);
+        } else {
+            return UserResource::collection($this->collection)->additional(['resume' => $this->resume]);
+        }
     }
 }

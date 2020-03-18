@@ -10,20 +10,32 @@
 namespace App\Resources\HelpRequest;
 
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\HelpRequest\HelpRequest;
+use App\Resources\ApiCollection;
 
 /**
  * Class HelpRequestsCollection
  * @package app\Resources\HelpRequest
  */
-class HelpRequestsCollection extends ResourceCollection {
+class HelpRequestsCollection extends ApiCollection {
     /**
      * Transform the resource collection into an array.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return array|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function toArray($request) {
-        return HelpRequestResource::collection($this->collection);
+
+        if ($this->resume) {
+            $this->collection->transform(
+                function (HelpRequest $helpRequest) {
+                    return (new HelpRequestResource($helpRequest, $this->resume))->additional($this->additional);
+                });
+
+            return parent::toArray($request);
+        } else {
+            return HelpRequestResource::collection($this->collection);
+        }
+
     }
 }

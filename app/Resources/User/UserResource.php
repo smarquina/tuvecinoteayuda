@@ -10,11 +10,11 @@
 namespace App\Resources\User;
 
 
+use App\Resources\ApiResource;
 use App\Models\User\User;
 use App\Models\User\UserType;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource {
+class UserResource extends ApiResource {
 
 
     /**
@@ -32,20 +32,20 @@ class UserResource extends JsonResource {
 
         return [
             'id'                => $user->id,
-            'email'             => $user->email,
+            'email'             => $this->when(!$this->resume, $user->email),
+            'phone'             => $this->when(!$this->resume, $user->phone),
             'name'              => $user->name,
             'user_type_id'      => new UserTypeResource($user->type),
             'corporate_name'    => $this->when($is_association, $user->corporate_name),
             'cif'               => $this->when($is_association, $user->cif),
-            'phone'             => $user->phone,
             'address'           => $this->when($user->id == \Auth::id(), $user->address),
-            'city'              => $this->when($user->id == \Auth::id(), $user->city),
-            'state'             => $this->when($user->id == \Auth::id(), $user->state),
-            'zip_code'          => $this->when($user->id == \Auth::id(), $user->zip_code),
-            'nearby_areas_id'   => new NearbyAreasResource($user->nearbyAreas),
+            'city'              => $user->city,
+            'state'             => $user->state,
+            'zip_code'          => $user->zip_code,
+            'nearby_areas_id'   => $this->when(!$this->resume, new NearbyAreasResource($user->nearbyAreas)),
             'activity_areas_id' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
             'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
-            'associations'      => new UserCollection($user->associations),
+            'associations'      => $this->when(!$this->resume, new UserCollection($user->associations)),
         ];
     }
 }

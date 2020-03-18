@@ -56,7 +56,7 @@ class HelpRequestController extends ApiController {
                 break;
         }
 
-        return new HelpRequestsCollection($helpRequests);
+        return new HelpRequestsCollection($helpRequests, true);
     }
 
     /**

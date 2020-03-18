@@ -10,11 +10,12 @@
 namespace App\Resources\HelpRequest;
 
 
+use App\Resources\ApiResource;
 use App\Models\HelpRequest\HelpRequest;
+use App\Resources\User\UserCollection;
 use App\Resources\User\UserResource;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class HelpRequestResource extends JsonResource {
+class HelpRequestResource extends ApiResource {
 
     /**
      * Transform the resource into an array.
@@ -30,10 +31,10 @@ class HelpRequestResource extends JsonResource {
 
         return [
             'id'                => $helpRequest->id,
-            'user'              => new UserResource($helpRequest->user),
+            'user'              => new UserResource($helpRequest->user, $this->resume),
             'help_request_type' => new HelpRequestTypeResource($helpRequest->type),
             'message'           => $helpRequest->message,
-            'assigned_user_id'  => new UserResource($helpRequest->user),
+            'assigned_user_id'  => new UserCollection($helpRequest->assignedUser),
             'accepted_at'       => $helpRequest->accepted_at ?? null,
             'created_at'        => $helpRequest->created_at->format("d/m/Y h:i"),
         ];
