@@ -44,7 +44,7 @@ class UserController extends ApiController {
             /** @var User $user */
             $user = \Auth::user();
             $updatable_fields = ['address', 'city', 'state', 'zip_code'];
-            if ($user == UserType::USER_TYPE_VOLUNTEER) {
+            if ($user->user_type_id == UserType::USER_TYPE_VOLUNTEER) {
                 $updatable_fields = array_merge($updatable_fields, ['nearby_areas_id']);
             }
             $user->update($request->only($updatable_fields));
