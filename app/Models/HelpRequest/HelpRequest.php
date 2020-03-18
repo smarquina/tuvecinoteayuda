@@ -11,6 +11,7 @@ namespace App\Models\HelpRequest;
 
 use App\Models\Common\BaseModel;
 use App\Models\User\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 /**
@@ -23,10 +24,13 @@ use App\Models\User\User;
  * @property \Illuminate\Support\Carbon|null                                       $accepted_at
  * @property \Illuminate\Support\Carbon|null                                       $created_at
  * @property \Illuminate\Support\Carbon|null                                       $updated_at
+ * @property \Illuminate\Support\Carbon|null                                       $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\User[] $assignedUser
  * @property-read int|null                                                         $assigned_user_count
  * @property-read \App\Models\HelpRequest\HelpRequestType                          $type
  * @property-read \App\Models\User\User                                            $user
+ * @method static bool|null forceDelete()
+ * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest query()
@@ -37,9 +41,16 @@ use App\Models\User\User;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\HelpRequest\HelpRequest onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\HelpRequest\HelpRequest withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\HelpRequest\HelpRequest withoutTrashed()
  * @mixin \Eloquent
  */
 class HelpRequest extends BaseModel {
+
+    use SoftDeletes;
+
     /**
      * The database table used by the model.
      *
