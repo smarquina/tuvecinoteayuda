@@ -30,13 +30,14 @@ class HelpRequestResource extends ApiResource {
         $helpRequest = clone $this;
 
         return [
-            'id'                => $helpRequest->id,
-            'user'              => new UserResource($helpRequest->user, $this->resume),
-            'help_request_type' => new HelpRequestTypeResource($helpRequest->type),
-            'message'           => $helpRequest->message,
-            'assigned_user_id'  => new UserCollection($helpRequest->assignedUser),
-            'accepted_at'       => $helpRequest->accepted_at ? $helpRequest->accepted_at->format("d/m/Y h:i") : null,
-            'created_at'        => $helpRequest->created_at->format("d/m/Y h:i"),
+            'id'                  => $helpRequest->id,
+            'user'                => new UserResource($helpRequest->user, $this->resume),
+            'help_request_type'   => new HelpRequestTypeResource($helpRequest->type),
+            'message'             => $helpRequest->message,
+            'assigned_user_id'    => new UserCollection($helpRequest->assignedUser),
+            'assigned_user_count' => $helpRequest->assigned_user_count,
+            'accepted_at'         => $helpRequest->accepted_at ? $helpRequest->accepted_at->format("d/m/Y h:i") : null,
+            'created_at'          => $helpRequest->created_at->format("d/m/Y h:i"),
         ];
     }
 }

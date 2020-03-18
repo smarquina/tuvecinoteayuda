@@ -51,6 +51,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
         $api->group(array('namespace' => 'User', 'as' => 'user', 'prefix' => 'user'), function ($api) {
             $api->get('profile',    'UserController@profile');
             $api->put('update',     'UserController@update');
+            $api->get('associates', 'UserController@associates');
 
             $api->group(['prefix' => 'association'], function ($api) {
                 $api->post('join/{id}',      'UserController@joinAssociation')->where('id', '[0-9]+');

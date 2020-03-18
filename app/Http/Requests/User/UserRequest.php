@@ -43,13 +43,13 @@ class UserRequest extends ApiRequest {
             case 'POST':
                 return array_merge($rules, [
                     'name'                  => 'required|string|max:150',
-                    'phone'                 => 'required|max:20|min:9|int|unique:users,phone',
+                    'phone'                 => 'required|max:9|min:8|int|unique:users,phone',
                     'email'                 => 'required|email|max:45|unique:users,email',
                     'password'              => 'required|max:20|min:8|confirmed',
                     'password_confirmation' => 'required|max:20',
                     'user_type_id'          => 'required|int|exists:user_types,id',
                     'corporate_name'        => 'string|max:150',
-                    'cif'                   => 'string|max:15',
+                    'cif'                   => 'string|max:5|min:5',
                 ]);
                 break;
             case 'PUT':
