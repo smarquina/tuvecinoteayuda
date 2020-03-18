@@ -11,6 +11,7 @@ namespace App\Http\Requests\User;
 
 
 use App\Http\Requests\ApiRequest;
+use App\Models\User\UserType;
 
 class UserRequest extends ApiRequest {
 
@@ -31,7 +32,7 @@ class UserRequest extends ApiRequest {
     public function rules() {
 
         $rules = [
-            'nearby_areas_id'   => 'nullable|exists:nearby_areas,id',
+            'nearby_areas_id'   => 'required_if:user_type_id,'. UserType::USER_TYPE_ASSOCIATION .'|exists:nearby_areas,id',
             'activity_areas_id' => 'nullable|exists:nearby_areas,id',
             'address'           => 'required|string|max:191',
             'city'              => 'required|string|max:20',
