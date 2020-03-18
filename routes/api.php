@@ -23,15 +23,15 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
     $api->group(array('prefix' => 'public', 'as' => 'public'), function ($api) {
 
         $api->group(array('prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth'), function ($api) {
-            $api->post('register', 'AuthController@register')->name('register');
-            $api->post('login', 'AuthController@login')->name('login');
+            $api->post('register',  'AuthController@register')->name('register');
+            $api->post('login',     'AuthController@login')->name('login');
         });
 
         $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@list');
 
         $api->group(array('namespace' => 'User'), function ($api) {
-            $api->get('user-types', 'UserTypeController@list');
-            $api->get('associatons', 'UserController@associations');
+            $api->get('user-types',     'UserTypeController@list');
+            $api->get('associatons',    'UserController@associations');
         });
     });
 
@@ -42,15 +42,21 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
         $api->group(array('namespace' => 'HelpRequest'), function ($api) {
             $api->get('help-request-types', 'HelpRequestTypeController@index');
 
-            $api->get('help-requests', 'HelpRequestController@list');
+            $api->get('help-requests',  'HelpRequestController@list');
             $api->post('help-requests', 'HelpRequestController@store');
             $api->post('help-requests/accept/{id}', 'HelpRequestController@accept');
-            $api->get('help-requests/pending', 'HelpRequestController@pending');
+            $api->get('help-requests/pending',      'HelpRequestController@pending');
         });
 
         $api->group(array('namespace' => 'User', 'as' => 'user', 'prefix' => 'user'), function ($api) {
-            $api->get('profile', 'UserController@profile');
-            $api->put('update', 'UserController@update');
+            $api->get('profile',    'UserController@profile');
+            $api->put('update',     'UserController@update');
+
+            $api->group(['prefix' => 'association'], function ($api) {
+                $api->post('join/{id}',      'UserController@joinAssociation');
+                $api->delete('detach/{id}',  'UserController@detachAssociation');
+
+            });
         });
 
     });

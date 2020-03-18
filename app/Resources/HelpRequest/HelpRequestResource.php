@@ -35,6 +35,7 @@ class HelpRequestResource extends JsonResource {
             'message'           => $helpRequest->message,
             'assigned_user_id'  => new UserResource($helpRequest->user),
             'accepted_at'       => $helpRequest->accepted_at ?? null,
+            'created_at'        => $helpRequest->created_at->format("d/m/Y h:i"),
         ];
     }
 }

@@ -16,7 +16,7 @@ use App\Models\User\User;
 use App\Models\User\UserType;
 use App\Resources\User\UserCollection;
 use App\Resources\User\UserResource;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /**
  * Class UserController
@@ -58,12 +58,76 @@ class UserController extends ApiController {
     }
 
     /**
-     * List help requests based on user type
+     * List associations based on user type.
      *
-     * @return HelpRequestsCollection
+     * @return UserCollection
      */
     public function associations() {
         $associations = User::whereUserTypeId(UserType::USER_TYPE_ASSOCIATION)->get();
         return new UserCollection($associations);
+    }
+
+    /**
+     * Join association.
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function joinAssociation(Request $request, $id) {
+        try {
+            $association = User::whereUserTypeId(UserType::USER_TYPE_ASSOCIATION)
+                               ->whereId($id)
+                               ->first();
+
+            if ($association instanceof User) {
+                /** @var User $user */
+                $user = \Auth::user();
+                $user->associations()->syncWithoutDetaching([$association->id]);
+
+                return $this->responseOK(trans('user.association.join.correct',
+                                               ['value' => $association->corporate_name]));
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                                trans('user.association.join.error'));
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('user.association.join.error');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
+    }
+
+    /**
+     * Detach user from given association.
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function detachAssociation(Request $request, $id) {
+        try {
+            $association = User::whereUserTypeId(UserType::USER_TYPE_ASSOCIATION)
+                               ->whereId($id)
+                               ->first();
+
+            /** @var User $user */
+            $user = \Auth::user();
+
+            if ($association instanceof User &&
+                $user->associations->contains('id', $association->id)) {
+
+                $user->associations()->detach([$association->id]);
+                return $this->responseOK(trans('user.association.detach.correct',
+                                               ['value' => $association->corporate_name]));
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                                trans('user.association.detach.error'));
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('user.association.detach.error');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
     }
 }
