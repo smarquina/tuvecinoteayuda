@@ -43,7 +43,11 @@ class UserController extends ApiController {
         try {
             /** @var User $user */
             $user = \Auth::user();
-            $user->update($request->only(['nearby_areas_id', 'address', 'city', 'state', 'zip_code']));
+            $updatable_fields = ['address', 'city', 'state', 'zip_code'];
+            if ($user == UserType::USER_TYPE_VOLUNTEER) {
+                $updatable_fields = array_merge($updatable_fields, ['nearby_areas_id']);
+            }
+            $user->update($request->only($updatable_fields));
             $user->save();
 
             return response()->json(['msg'  => trans('general.model.update.correct', ['value' => $user->name]),

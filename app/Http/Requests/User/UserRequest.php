@@ -12,6 +12,7 @@ namespace App\Http\Requests\User;
 
 use App\Http\Requests\ApiRequest;
 use App\Models\User\UserType;
+use Illuminate\Support\Facades\Auth;
 
 class UserRequest extends ApiRequest {
 
@@ -32,13 +33,19 @@ class UserRequest extends ApiRequest {
     public function rules() {
 
         $rules = [
-            'nearby_areas_id'   => 'required_if:user_type_id,'. UserType::USER_TYPE_ASSOCIATION .'|exists:nearby_areas,id',
             'activity_areas_id' => 'nullable|exists:nearby_areas,id',
             'address'           => 'required|string|max:191',
             'city'              => 'required|string|max:20',
             'state'             => 'required|string|max:20',
             'zip_code'          => 'required|string|max:5',
         ];
+
+        $user = Auth::user();
+        if ($user->user_type_id == UserType::USER_TYPE_VOLUNTEER) {
+            array_merge($rules, [
+                'nearby_areas_id'   => 'required|exists:nearby_areas,id',
+            ]);
+        }
 
         switch ($this->method()) {
             case 'POST':
