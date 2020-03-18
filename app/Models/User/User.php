@@ -55,6 +55,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read \App\Models\User\UserType                                                                                 $type
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\User[]                                          $associations
  * @property-read int|null                                                                                                  $associations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\User[]                                          $associates
+ * @property-read int|null                                                                                                  $associates_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User query()
@@ -196,6 +198,18 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
                                     'users_has_users',
                                     'user_id',
                                     'user_id_assoc');
+    }
+
+    /**
+     * My associated users (only for associations).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function associates() {
+        return $this->belongsToMany(User::class,
+                                    'users_has_users',
+                                    'user_id_assoc',
+                                    'user_id');
     }
 
     /**

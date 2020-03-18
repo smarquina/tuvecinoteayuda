@@ -39,4 +39,5 @@ class BaseModel extends \Eloquent {
         'updated_at',
     ];
 
+    protected $dateFormat = "d/m/Y h:i";
 }

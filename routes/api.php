@@ -31,7 +31,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
 
         $api->group(array('namespace' => 'User'), function ($api) {
             $api->get('user-types',     'UserTypeController@list');
-            $api->get('associatons',    'UserController@associations');
+            $api->get('associations',   'UserController@associations');
         });
     });
 
@@ -44,7 +44,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
 
             $api->get('help-requests',  'HelpRequestController@list');
             $api->post('help-requests', 'HelpRequestController@store');
-            $api->post('help-requests/accept/{id}', 'HelpRequestController@accept');
+            $api->post('help-requests/accept/{id}', 'HelpRequestController@accept')->where('id', '[0-9]+');
             $api->get('help-requests/pending',      'HelpRequestController@pending');
         });
 
@@ -53,8 +53,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
             $api->put('update',     'UserController@update');
 
             $api->group(['prefix' => 'association'], function ($api) {
-                $api->post('join/{id}',      'UserController@joinAssociation');
-                $api->delete('detach/{id}',  'UserController@detachAssociation');
+                $api->post('join/{id}',      'UserController@joinAssociation')->where('id', '[0-9]+');
+                $api->delete('detach/{id}',  'UserController@detachAssociation')->where('id', '[0-9]+');
 
             });
         });

@@ -35,7 +35,7 @@ class HelpRequestResource extends ApiResource {
             'help_request_type' => new HelpRequestTypeResource($helpRequest->type),
             'message'           => $helpRequest->message,
             'assigned_user_id'  => new UserCollection($helpRequest->assignedUser),
-            'accepted_at'       => $helpRequest->accepted_at ?? null,
+            'accepted_at'       => $helpRequest->accepted_at ? $helpRequest->accepted_at->format("d/m/Y h:i") : null,
             'created_at'        => $helpRequest->created_at->format("d/m/Y h:i"),
         ];
     }
