@@ -56,7 +56,7 @@ class HelpRequestController extends ApiController {
                 break;
         }
 
-        return new HelpRequestsCollection($helpRequests, true);
+        return new HelpRequestsCollection($helpRequests->sortByDesc('created_at'), true);
     }
 
     /**
@@ -117,6 +117,63 @@ class HelpRequestController extends ApiController {
         } catch (\Exception $exception) {
             \Log::error($exception);
             $msg = config('app.debug') ? $exception->getMessage() : trans('general.model.update.error');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
+    }
+
+    /**
+     * Cancel accepted help request.
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function revert(Request $request, $id) {
+        try {
+            $help_request = HelpRequest::findOrFail($id);
+
+            if ($help_request->assignedUser->contains('id', \Auth::id())) {
+                $help_request->assignedUser()->detach([\Auth::id()]);
+
+                if ($help_request->assigned_user_count == 0) {
+                    $help_request->accepted_at = null;
+                    $help_request->save();
+                }
+                return $this->responseOK(trans('helprequest.revert.accepted'));
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                                trans('helprequest.revert.error'));
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('helprequest.revert.error');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
+    }
+
+    /**
+     * Delete my help request.
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request, $id) {
+        try {
+            $help_request = HelpRequest::findOrFail($id);
+
+            if ($help_request->user_id == \Auth::id()) {
+                $help_request->assignedUser()->sync([]);
+                $help_request->delete();
+
+                return $this->responseOK(trans('helprequest.delete.correct'));
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                                trans('helprequest.delete.error'));
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('helprequest.delete.error');
             return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
         }
     }

@@ -77,7 +77,7 @@ class UserController extends ApiController {
         $user = \Auth::user();
 
         if ($user->user_type_id == UserType::USER_TYPE_ASSOCIATION) {
-            return new UserCollection($user->associates, true);
+            return new UserCollection($user->associates);
         } else {
             return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
                                             trans('auth.user_type.denied'));
