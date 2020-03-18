@@ -22,20 +22,13 @@ class HelpRequestsCollection extends ApiCollection {
      * Transform the resource collection into an array.
      *
      * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return array
      */
     public function toArray($request) {
+        $this->collection->transform(function (HelpRequest $helpRequest) {
+            return (new HelpRequestResource($helpRequest, $this->resume))->additional($this->additional);
+        });
 
-        if ($this->resume) {
-            $this->collection->transform(
-                function (HelpRequest $helpRequest) {
-                    return (new HelpRequestResource($helpRequest, $this->resume))->additional($this->additional);
-                });
-
-            return parent::toArray($request);
-        } else {
-            return HelpRequestResource::collection($this->collection);
-        }
-
+        return parent::toArray($request);
     }
 }
