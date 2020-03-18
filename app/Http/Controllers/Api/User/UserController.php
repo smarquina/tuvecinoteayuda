@@ -64,7 +64,24 @@ class UserController extends ApiController {
      */
     public function associations() {
         $associations = User::whereUserTypeId(UserType::USER_TYPE_ASSOCIATION)->get();
-        return new UserCollection($associations);
+        return new UserCollection($associations, true);
+    }
+
+    /**
+     * List of my associated users.
+     *
+     * @return UserCollection|\Illuminate\Http\JsonResponse
+     */
+    public function associates() {
+        /** @var User $user */
+        $user = \Auth::user();
+
+        if ($user->user_type_id == UserType::USER_TYPE_ASSOCIATION) {
+            return new UserCollection($user->associates, true);
+        } else {
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                            trans('auth.user_type.denied'));
+        }
     }
 
     /**
