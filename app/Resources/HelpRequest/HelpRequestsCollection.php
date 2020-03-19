@@ -18,6 +18,7 @@ use App\Resources\ApiCollection;
  * @package app\Resources\HelpRequest
  */
 class HelpRequestsCollection extends ApiCollection {
+
     /**
      * Transform the resource collection into an array.
      *
@@ -30,5 +31,15 @@ class HelpRequestsCollection extends ApiCollection {
         });
 
         return parent::toArray($request);
+    }
+
+    /**
+     * Get additional data that should be returned with the resource array.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function with($request) {
+        return [];
     }
 }

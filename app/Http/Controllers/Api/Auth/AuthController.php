@@ -15,6 +15,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User\User;
 use App\Models\User\UserStatus;
+use App\Models\User\UserType;
 use App\Resources\User\UserResource;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -33,10 +34,11 @@ class AuthController extends ApiController {
      */
     public function register(UserRequest $request) {
         try {
-            $user                 = new User($request->except('password'));
-            $user->password       = \Hash::make($request->input('password'));
-            $user->remember_token = \Str::random(100);
-            $user->user_status_id = UserStatus::ACTIVE;
+            $user                  = new User($request->except('password'));
+            $user->password        = \Hash::make($request->input('password'));
+            $user->remember_token  = \Str::random(100);
+            $user->user_status_id  = UserStatus::ACTIVE;
+            $user->nearby_areas_id = $user->user_type_id == UserType::USER_TYPE_VOLUNTEER ? $user->nearby_areas_id : null;
             $user->save();
 
             $token = \JWTAuth::fromUser($user);

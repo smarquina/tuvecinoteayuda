@@ -10,6 +10,7 @@
 namespace App\Resources\HelpRequest;
 
 
+use App\Models\User\User;
 use App\Resources\ApiResource;
 use App\Models\HelpRequest\HelpRequest;
 use App\Resources\User\UserCollection;
@@ -29,13 +30,18 @@ class HelpRequestResource extends ApiResource {
         /** @var HelpRequest $helpRequest */
         $helpRequest = clone $this;
 
+        $assignedUsers = $helpRequest->assignedUser->transform(function (User $user) {
+            $resume = $this->additional['show_assigned_additional_data'] ?? true;
+            return (new UserResource($user, !$resume))->additional($this->additional);
+        });
+
         return [
             'id'                  => $helpRequest->id,
-            'user'                => new UserResource($helpRequest->user, $this->resume),
+            'user'                => (new UserResource($helpRequest->user, $this->resume))->additional($this->additional),
             'help_request_type'   => new HelpRequestTypeResource($helpRequest->type),
             'message'             => $helpRequest->message,
-            'assigned_user_id'    => new UserCollection($helpRequest->assignedUser),
-            'assigned_user_count' => $helpRequest->assigned_user_count,
+            'assigned_user_id'    => $assignedUsers,
+            'assigned_user_count' => $helpRequest->assignedUser->count(),
             'accepted_at'         => $helpRequest->accepted_at ? $helpRequest->accepted_at->format("d/m/Y h:i") : null,
             'created_at'          => $helpRequest->created_at->format("d/m/Y h:i"),
         ];

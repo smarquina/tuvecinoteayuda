@@ -14,7 +14,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ApiCollection extends ResourceCollection {
 
-    protected $resume;
+    public $resume;
 
     /**
      * Create a new resource instance.

@@ -40,12 +40,10 @@ class UserRequest extends ApiRequest {
             'zip_code'          => 'required|string|max:5',
         ];
 
-        $user = Auth::user();
-        if ($user->user_type_id == UserType::USER_TYPE_VOLUNTEER) {
-            array_merge($rules, [
-                'nearby_areas_id'   => 'required|exists:nearby_areas,id',
-            ]);
-        }
+        array_merge($rules,
+                    (\Auth::check() && \Auth::user()->user_type_id == UserType::USER_TYPE_VOLUNTEER)
+                        ? ['nearby_areas_id' => 'required|int|exists:nearby_areas,id',]
+                        : ['nearby_areas_id' => 'nullable|int|',]);
 
         switch ($this->method()) {
             case 'POST':
@@ -57,7 +55,7 @@ class UserRequest extends ApiRequest {
                     'password_confirmation' => 'required|max:20',
                     'user_type_id'          => 'required|int|exists:user_types,id',
                     'corporate_name'        => 'string|max:150',
-                    'cif'                   => 'string|max:5|min:5',
+                    'cif'                   => 'string|max:9|min:9',
                 ]);
                 break;
             case 'PUT':

@@ -70,13 +70,18 @@ class HelpRequestController extends ApiController {
 
         switch ($user->user_type_id) {
             case UserType::USER_TYPE_REQUESTER:
-                return new HelpRequestsCollection($user->helpRequests);
+                $helpRequests = $user->helpRequests;
+                break;
             case UserType::USER_TYPE_VOLUNTEER:
-                return new HelpRequestsCollection($user->assignedHelpRequests);
+                $helpRequests = $user->assignedHelpRequests;
+                break;
             default:
                 $helpRequests = collect();
         }
-        return new HelpRequestsCollection($helpRequests);
+
+        return (new HelpRequestsCollection($helpRequests, false))
+            ->additional(['show_direction'                => true,
+                          'show_assigned_additional_data' => true]);
     }
 
     /**

@@ -29,6 +29,7 @@ class UserResource extends ApiResource {
         /** @var User $user */
         $user           = clone $this;
         $is_association = $user->user_type_id == UserType::USER_TYPE_ASSOCIATION;
+        $show_direction = $this->additional['show_direction'] ?? false;
 
         return [
             'id'                => $user->id,
@@ -38,11 +39,13 @@ class UserResource extends ApiResource {
             'user_type_id'      => new UserTypeResource($user->type),
             'corporate_name'    => $this->when($is_association, $user->corporate_name),
             'cif'               => $this->when($is_association, $user->cif),
-            'address'           => $this->when($user->id == \Auth::id(), $user->address),
+            'address'           => $this->when($user->id == \Auth::id() || $show_direction, $user->address),
             'city'              => $user->city,
             'state'             => $user->state,
             'zip_code'          => $user->zip_code,
-            'nearby_areas_id'   => $this->when(!$this->resume, new NearbyAreasResource($user->nearbyAreas)),
+            'nearby_areas_id'   => $this->when(!$this->resume, $user->nearbyAreas
+                ? new NearbyAreasResource($user->nearbyAreas)
+                : 99),
             'activity_areas_id' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
             'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
             'associations'      => $this->when(!$this->resume, new UserCollection($user->associations)),
