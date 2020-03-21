@@ -19,6 +19,7 @@ use App\Models\User\UserType;
 use App\Resources\HelpRequest\HelpRequestResource;
 use App\Resources\HelpRequest\HelpRequestsCollection;
 use Illuminate\Http\Request;
+use Auth;
 
 class HelpRequestController extends ApiController {
 
@@ -179,6 +180,36 @@ class HelpRequestController extends ApiController {
         } catch (\Exception $exception) {
             \Log::error($exception);
             $msg = config('app.debug') ? $exception->getMessage() : trans('helprequest.delete.error');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
+    }
+
+    /**
+     * Track click in external call action of one help request.
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function trackExternalCall(Request $request, $id)
+    {
+        try {
+            $help_request = HelpRequest::findOrFail($id);
+
+            if ($help_request->user_id == Auth::id()) {
+                $help_request->track_external_call += 1;
+                if (empty($help_request->track_external_call_at)) {
+                    $help_request->track_external_call_at = now();
+                }
+                $help_request->save();
+
+                return $this->responseOK(trans('helprequest.trackexternalcall.correct'));
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, trans('helprequest.trackexternalcall.error'));
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('helprequest.trackexternalcall.error');
             return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
         }
     }

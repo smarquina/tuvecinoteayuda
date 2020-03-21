@@ -19,5 +19,9 @@ return [
         'correct' => 'Hemos cancelado tu solicitud de ayuda. ¡Recuerda que cualquier cosa que necesites, nosotros trataremos de ayudarte!',
         'error'   => 'No hemos podido cancelar tu solicitud de ayuda',
     ],
+    'trackexternalcall'     => [
+        'correct' => 'Llamada externa anotada correctamente.',
+        'error'   => 'No hemos podido anotar la llamada externa.',
+    ],
 
 ];

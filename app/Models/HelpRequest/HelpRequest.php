@@ -65,7 +65,7 @@ class HelpRequest extends BaseModel {
      * @var array
      */
     protected $fillable = [
-        'user_id', 'help_request_type_id', 'message', 'assigned_user_id', 'accepted_at',
+        'user_id', 'help_request_type_id', 'message', 'assigned_user_id', 'accepted_at', 'track_external_call', 'track_external_call_at',
     ];
 
     /**

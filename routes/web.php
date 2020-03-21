@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,13 +10,3 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-$api = app('Dingo\Api\Routing\Router');
-
-$api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api) {
-    $api->put('register', 'Auth\AuthController@register');
-    $api->post('login', 'Auth\AuthController@login');
-    $api->post('logout', 'Auth\AuthController@logout');
-
-
-});

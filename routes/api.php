@@ -42,12 +42,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
         $api->group(array('namespace' => 'HelpRequest'), function ($api) {
             $api->get('help-request-types', 'HelpRequestTypeController@index');
 
-            $api->get('help-requests',                  'HelpRequestController@list');
-            $api->post('help-requests',                 'HelpRequestController@store');
-            $api->delete('help-requests/{id}',          'HelpRequestController@delete')->where('id', '[0-9]+');
-            $api->post('help-requests/accept/{id}',     'HelpRequestController@accept')->where('id', '[0-9]+');
-            $api->delete('help-requests/revert/{id}',   'HelpRequestController@revert')->where('id', '[0-9]+');
-            $api->get('help-requests/pending',          'HelpRequestController@pending');
+            $api->get('help-requests',                              'HelpRequestController@list');
+            $api->post('help-requests',                             'HelpRequestController@store');
+            $api->delete('help-requests/{id}',                      'HelpRequestController@delete')->where('id', '[0-9]+');
+            $api->post('help-requests/accept/{id}',                 'HelpRequestController@accept')->where('id', '[0-9]+');
+            $api->delete('help-requests/revert/{id}',               'HelpRequestController@revert')->where('id', '[0-9]+');
+            $api->get('help-requests/pending',                      'HelpRequestController@pending');
+            $api->post('help-requests/track-external-call/{id}',    'HelpRequestController@trackExternalCall')->where('id', '[0-9]+');
         });
 
         $api->group(array('namespace' => 'User', 'as' => 'user', 'prefix' => 'user'), function ($api) {
@@ -58,7 +59,6 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
             $api->group(['prefix' => 'association'], function ($api) {
                 $api->post('join/{id}',      'UserController@joinAssociation')->where('id', '[0-9]+');
                 $api->delete('detach/{id}',  'UserController@detachAssociation')->where('id', '[0-9]+');
-
             });
         });
 
