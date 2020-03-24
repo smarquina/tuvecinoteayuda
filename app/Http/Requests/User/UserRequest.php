@@ -87,6 +87,9 @@ class UserRequest extends ApiRequest {
             'address'               => trans('general.attributes.address'),
             'city'                  => trans('general.attributes.city'),
             'zip_code'              => trans('general.attributes.zip_code'),
+            'activity_areas_id'     => trans('user.attributes.activity_areas_id'),
+            'corporate_name'        => trans('user.attributes.corporate_name'),
+            'cif'                   => trans('user.attributes.cif'),
         ];
     }
 }

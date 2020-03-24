@@ -17,6 +17,7 @@ use App\Models\User\User;
 use App\Models\User\UserStatus;
 use App\Models\User\UserType;
 use App\Resources\User\UserResource;
+use Illuminate\Auth\Events\Registered;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 
@@ -40,6 +41,9 @@ class AuthController extends ApiController {
             $user->user_status_id  = UserStatus::ACTIVE;
             $user->nearby_areas_id = $user->user_type_id == UserType::USER_TYPE_VOLUNTEER ? $user->nearby_areas_id : null;
             $user->save();
+
+            event(new Registered($user));
+
 
             $token = \JWTAuth::fromUser($user);
             return response()->json(array('user' => $user, 'token' => $token));

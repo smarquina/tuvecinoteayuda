@@ -11,6 +11,7 @@ namespace App\Models\User;
 
 use App\Models\Common\BaseModel;
 use App\Models\HelpRequest\HelpRequest;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -228,5 +229,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      */
     public function getJWTCustomClaims() {
         return [];
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
     }
 }

@@ -1,27 +1,32 @@
 @component('mail::layout')
-{{-- Header --}}
-@slot('header')
-@component('mail::header', ['url' => config('app.url')])
-{{ config('app.name') }}
-@endcomponent
-@endslot
+    {{-- Header --}}
+    @slot('header')
+        @component('mail::header', ['url' => config('app.url_front')])
+            {{--{{ config('app.name') }}--}}
+        @endcomponent
+    @endslot
 
-{{-- Body --}}
-{{ $slot }}
+    @slot('greeting')
+        {{$greeting ?? ''}}
+    @endslot
 
-{{-- Subcopy --}}
-@isset($subcopy)
-@slot('subcopy')
-@component('mail::subcopy')
-{{ $subcopy }}
-@endcomponent
-@endslot
-@endisset
+    {{-- Body --}}
+    {{ $slot }}
 
-{{-- Footer --}}
-@slot('footer')
-@component('mail::footer')
-© {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
-@endcomponent
-@endslot
+    {{-- Subcopy --}}
+    @isset($subcopy)
+        @slot('subcopy')
+            @component('mail::subcopy')
+                {{ $subcopy }}
+            @endcomponent
+        @endslot
+    @endisset
+
+    {{-- Footer --}}
+    @slot('footer')
+        @component('mail::footer', ['url' => config('app.url_front')])
+            Copyright © {{ date('Y') }} {{ config('app.name') }} | Asociación Burgalesa de Ingenieros Informáticos |
+            @lang('mail.common.rights')
+        @endcomponent
+    @endslot
 @endcomponent
