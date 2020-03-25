@@ -10,6 +10,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
+use Spatie\Url\Url;
 
 class VerificationController extends Controller {
     /*
@@ -54,28 +55,26 @@ class VerificationController extends Controller {
         try {
             /** @var User $user */
             $user = User::findOrFail($request->route('id'));
+            $url  = Url::fromString(config('app.url_front'));
 
             if (!hash_equals((string)$request->route('hash'), sha1($user->getEmailForVerification()))) {
                 throw new AuthorizationException;
             }
 
             if ($user->hasVerifiedEmail()) {
-                return redirect()->away(config('app.url_front'),
-                                        HttpErrors::HTTP_MOVED_PERMANENTLY,
-                                        ['verified' => true]);
+                return redirect()->away($url->withQueryParameter('verified', true),
+                                        HttpErrors::HTTP_MOVED_PERMANENTLY);
             }
 
             if ($user->markEmailAsVerified()) {
                 event(new Verified($user));
             }
 
-            return redirect()->away(config('app.url_front'),
-                                    HttpErrors::HTTP_MOVED_PERMANENTLY,
-                                    ['verified' => true]);
+            return redirect()->away($url->withQueryParameter('verified', true),
+                                    HttpErrors::HTTP_MOVED_PERMANENTLY);
         } catch (\Exception $exception) {
-            return redirect()->away(config('app.url_front'),
-                                    HttpErrors::HTTP_MOVED_PERMANENTLY,
-                                    ['verified' => false]);
+            return redirect()->away($url->withQueryParameter('verified', false),
+                                    HttpErrors::HTTP_MOVED_PERMANENTLY);
         }
     }
 }

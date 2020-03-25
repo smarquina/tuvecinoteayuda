@@ -14,10 +14,12 @@ use App\Models\HelpRequest\HelpRequest;
 use App\Notifications\SendResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -87,9 +89,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereVerified($value)
  * @mixin \Eloquent
  */
-class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, JWTSubject {
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, JWTSubject, MustVerifyEmailContract {
 
-    use Notifiable, Authenticatable, Authorizable, CanResetPassword;
+    use Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
 
     /**
      * The attributes that are mass assignable.
