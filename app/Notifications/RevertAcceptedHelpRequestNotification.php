@@ -4,11 +4,11 @@ namespace App\Notifications;
 
 use App\Models\HelpRequest\HelpRequest;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CancelHelpRequestNotification extends Notification {
+class RevertAcceptedHelpRequestNotification extends Notification
+{
     use Queueable;
 
     /** @var HelpRequest $helpRequest */
@@ -17,7 +17,7 @@ class CancelHelpRequestNotification extends Notification {
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param HelpRequest $helpRequest
      */
     public function __construct(HelpRequest $helpRequest) {
         $this->helpRequest = $helpRequest;
@@ -41,23 +41,24 @@ class CancelHelpRequestNotification extends Notification {
      */
     public function toMail($notifiable) {
         return (new MailMessage)
-            ->subject(trans('mail.help_request.cancelled_requester.subject'))
-            ->greeting(trans('mail.common.hi', []))
-            ->line(trans('mail.help_request.cancelled_requester.body', [
+            ->subject(trans('mail.help_request.cancelled_volunteer.subject'))
+            ->greeting(trans('mail.common.hi_user', ['user' => $this->helpRequest->user->name]))
+            ->line(trans('mail.help_request.cancelled_volunteer.body', [
                 'profileURL'  => config('app.url_front'),
-                'name'        => $this->helpRequest->user->name,
+                'name'        => \Auth::user()->name,
                 'description' => $this->helpRequest->message,
             ]))
-            ->action(trans('mail.help_request.cancelled_requester.act_btn'), config('app.url_front'));
+            ->action(trans('mail.help_request.cancelled_volunteer.act_btn'), config('app.url_front'));
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable) {
+    public function toArray($notifiable)
+    {
         return [
             //
         ];

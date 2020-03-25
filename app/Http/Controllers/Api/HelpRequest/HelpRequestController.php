@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Api\HelpRequest;
 
 use App\Events\CancelHelpRequest;
+use App\Events\RevertAcceptedHelpRequest;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
 use App\Http\Requests\Help\HelpRequestRequest;
@@ -146,6 +147,9 @@ class HelpRequestController extends ApiController {
                     $help_request->accepted_at = null;
                     $help_request->save();
                 }
+
+                event(new RevertAcceptedHelpRequest($help_request));
+
                 return $this->responseOK(trans('helprequest.revert.accepted'));
             } else {
                 return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,

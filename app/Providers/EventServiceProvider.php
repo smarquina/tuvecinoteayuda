@@ -3,11 +3,12 @@
 namespace App\Providers;
 
 use App\Events\CancelHelpRequest;
+use App\Events\RevertAcceptedHelpRequest;
 use App\Listeners\CancelHelpRequestListener;
-use Illuminate\Auth\Events\Registered;
+use App\Listeners\RevertAcceptedHelpRequestListener;
 use App\Listeners\SendEmailVerificationListener;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CancelHelpRequest::class => [
           CancelHelpRequestListener::class
+        ],
+        RevertAcceptedHelpRequest::class => [
+          RevertAcceptedHelpRequestListener::class
         ],
 //        'Illuminate\Auth\Events\Verified' => [
 //            'App\Listeners\VerifiedUserListener',
