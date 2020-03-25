@@ -11,6 +11,7 @@ namespace App\Models\User;
 
 use App\Models\Common\BaseModel;
 use App\Models\HelpRequest\HelpRequest;
+use App\Notifications\SendResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -52,6 +53,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read \App\Models\User\ActivityAreas                                                                            $activityAreas
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null                                                                                                  $notifications_count
+ * @property string|null                                                                                                    $birthday
+ * @property int                                                                                                            $verified
  * @property-read \App\Models\User\UserStatus                                                                               $status
  * @property-read \App\Models\User\UserType                                                                                 $type
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\User[]                                          $associations
@@ -80,6 +83,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereActivityAreasId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereCif($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereCorporateName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereBirthday($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User\User whereVerified($value)
  * @mixin \Eloquent
  */
 class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, JWTSubject {
@@ -236,5 +241,17 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @return void
      */
+    public function sendEmailVerificationNotification() {
+        $this->notify(new VerifyEmailNotification);
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token) {
+        $this->notify(new SendResetPasswordNotification($token));
     }
 }

@@ -32,8 +32,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
         $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@list');
 
         $api->group(array('namespace' => 'User'), function ($api) {
-            $api->get('user-types',     'UserTypeController@list');
-            $api->get('associations',   'UserController@associations');
+            $api->get('user-types',         'UserTypeController@list');
+            $api->get('nearby-areas',       'NearbyAreasController@list');
+            $api->get('activity-areas',     'ActivityAreasController@list');
+            $api->get('associations',       'UserController@associations');
         });
     });
 
@@ -63,6 +65,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
                 $api->delete('detach/{id}',  'UserController@detachAssociation')->where('id', '[0-9]+');
             });
         });
+
+        $api->post('user/verify',   'Auth\AuthController@verifyUserData');
 
     });
 
