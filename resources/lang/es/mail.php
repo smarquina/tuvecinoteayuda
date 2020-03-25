@@ -13,7 +13,7 @@ return [
                        'welcome'      => 'Estimado/a :user, bienvenido/a a Tu vecino te ayuda.',
                        'no_print'     => 'Por favor considere el medio ambiente antes de imprimir este correo electrónico!',
                        'not_attended' => 'No responda a este correo. Esta cuenta no es atendida',
-                       'team'         => "Recibe un cordial saludo del equipo de Tu Vecino te Ayuda. <br> Y recuerda ¡NO ESTÁS SOLO!",
+                       'team'         => "<br> Recibe un cordial saludo del equipo de Tu Vecino te Ayuda. <br> Y recuerda ¡NO ESTÁS SOLO!",
                        'action_text'  => "Si encuentra algún problema al pulsar el botón \":actionText\", copie y peque la siguiente URL \n" .
                                          'en la barra de direcciones de su navegador: <a href=\':actionURL\'>:actionURL</a>',
                        'rights'       => 'Todos los derechos reservados',
@@ -22,11 +22,12 @@ return [
     ],
     'auth'         => [
         'resetPassword' => [
-            'subject' => 'Cambio de contraseña',
-            'body'    => 'Hemos recibido una solicitud de cambio de contraseña para tu usuario. Si no has sido tú ' .
-                         'no te preocupes, ignora este mensaje.
-                          Puede acceder al cambio de contraseña desde el siguiente enlace:',
-            'act_btn' => 'Establecer contraseña',
+            'subject'    => 'Cambio de contraseña',
+            'body'       => "Hemos recibido una solicitud de cambio de contraseña para tu usuario. Si no has sido tú
+                             no te preocupes, ignora este mensaje.<br> Puedes acceder al cambio de contraseña desde
+                             el siguiente enlace:'",
+            'expiration' => "Su enlace para restablecer la contraseña caducará en :count minutos.",
+            'act_btn'    => 'Establecer contraseña',
         ],
         'newUser'       => [
             'subject'          => 'Bienvenido a ' . config('app.name'),

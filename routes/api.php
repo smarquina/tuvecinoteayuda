@@ -23,8 +23,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
     $api->group(array('prefix' => 'public', 'as' => 'public'), function ($api) {
 
         $api->group(array('prefix' => 'auth', 'namespace' => 'Auth', 'as' => 'auth'), function ($api) {
-            $api->post('register',  'AuthController@register')->name('register');
-            $api->post('login',     'AuthController@login')->name('login');
+            $api->post('register',          'AuthController@register')->name('register');
+            $api->post('login',             'AuthController@login')->name('login');
+            $api->post('password/email',    'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+            $api->post('password/reset',    'ResetPasswordController@reset')->name('password.update');
         });
 
         $api->get('help-request-types', 'HelpRequest\HelpRequestTypeController@list');

@@ -46,6 +46,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\HelpRequest\HelpRequest withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\HelpRequest\HelpRequest withoutTrashed()
  * @mixin \Eloquent
+ * @property int|null $track_external_call
+ * @property string|null $track_external_call_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereTrackExternalCall($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereTrackExternalCallAt($value)
  */
 class HelpRequest extends BaseModel {
 
