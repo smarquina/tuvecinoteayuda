@@ -15,6 +15,7 @@ return [
         'activity_areas_id'     => "Ámbito",
         'corporate_name'        => "Nombre corporativo",
         'cif'                   => "CIF/NIF",
+        'token'                 => 'Código de seguridad',
     ],
     'association' => [
         'join'   => [

@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use Illuminate\Auth\Events\Registered;
 
-class SendEmailVerificationNotification {
+class SendEmailVerificationListener {
 
     /**
      * Handle the event.

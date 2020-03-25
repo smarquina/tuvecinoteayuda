@@ -25,7 +25,7 @@ class VerifyEmailNotification extends VerifyEmail {
             return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
         }
 
-        $profileURL = config('app.url');
+        $profileURL = config('app.url_front');
 
         $message = (new MailMessage)
             ->subject(trans('mail.auth.newUser.subject'))

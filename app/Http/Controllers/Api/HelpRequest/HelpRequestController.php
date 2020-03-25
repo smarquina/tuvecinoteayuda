@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Api\HelpRequest;
 
+use App\Events\CancelHelpRequest;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
 use App\Http\Requests\Help\HelpRequestRequest;
@@ -172,6 +173,8 @@ class HelpRequestController extends ApiController {
                 $help_request->assignedUser()->sync([]);
                 $help_request->delete();
 
+                event(new CancelHelpRequest($help_request));
+
                 return $this->responseOK(trans('helprequest.delete.correct'));
             } else {
                 return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
@@ -191,8 +194,7 @@ class HelpRequestController extends ApiController {
      * @param int     $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function trackExternalCall(Request $request, $id)
-    {
+    public function trackExternalCall(Request $request, $id) {
         try {
             $help_request = HelpRequest::findOrFail($id);
 

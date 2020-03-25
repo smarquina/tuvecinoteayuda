@@ -36,4 +36,18 @@ class ResetPasswordRequest extends ApiRequest {
             'password_confirmation' => 'required|max:20',
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes() {
+        return [
+            'email'                 => trans('general.attributes.email'),
+            'password'              => trans('general.attributes.password'),
+            'password_confirmation' => trans('user.attributes.password_confirmation'),
+            'token'                 => trans('user.attributes.token'),
+        ];
+    }
 }
