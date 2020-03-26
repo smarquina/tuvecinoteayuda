@@ -29,7 +29,7 @@ class SendResetPasswordNotification extends ResetPassword {
         $url = static::$createUrlCallback
             ? call_user_func(static::$createUrlCallback, $notifiable, $this->token)
             : Url::fromString(config('app.url_front'))
-                 ->withPath('password/reset')
+                 ->withPath('recovery.html')
                  ->withQueryParameter('token', $this->token)
                  ->withQueryParameter('email', $notifiable->getEmailForPasswordReset());
 

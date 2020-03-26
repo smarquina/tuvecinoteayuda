@@ -40,19 +40,26 @@ class UserResource extends ApiResource {
             'email'             => $this->when(!$this->resume, $user->email),
             'phone'             => $this->when(!$this->resume, $user->phone),
             'name'              => $user->name,
-            'user_type_id'      => new UserTypeResource($user->type),
+            'user_type_id'      => new UserTypeResource($user->type), //legacy
+            'user_type'         => new UserTypeResource($user->type),
             'corporate_name'    => $this->when($is_association, $user->corporate_name),
             'cif'               => $this->when($is_association, $user->cif),
             'address'           => $this->when($user->id == \Auth::id() || $show_direction, $user->address),
             'city'              => $user->city,
             'state'             => $user->state,
             'zip_code'          => $user->zip_code,
-            'nearby_areas_id'   => $this->when(!$this->resume && $is_volunteer,
+            'nearby_areas_id'   => $this->when(!$this->resume && $is_volunteer, //legacy
                                                $user->nearbyAreas
                                                    ? new NearbyAreasResource($user->nearbyAreas)
                                                    : 99),
-            'activity_areas_id' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
-            'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
+            'nearby_areas'      => $this->when(!$this->resume && $is_volunteer,
+                                               $user->nearbyAreas
+                                                   ? new NearbyAreasResource($user->nearbyAreas)
+                                                   : 99),
+            'activity_areas_id' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)), //legacy
+            'activity_areas' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
+            'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)), //legacy
+            'user_status'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
             'associations'      => $this->when(!$this->resume && $show_associations,
                                                new UserCollection($user->associations)),
         ];

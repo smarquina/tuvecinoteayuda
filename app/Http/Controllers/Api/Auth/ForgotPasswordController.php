@@ -34,10 +34,10 @@ class ForgotPasswordController extends ApiController {
             $this->credentials($request)
         );
 
-        if ($response == \Password::RESET_LINK_SENT) {
-            return $this->responseOK(trans($response));
-        } else {
+        //Always return as OK even if email doesn't exist. Do not expose mails.
+        return $this->responseOK(trans($response));
+        /*if ($response == \Password::RESET_LINK_SENT) {} else {
             throw ValidationException::withMessages(['email' => [trans($response)]]);
-        }
+        }*/
     }
 }
