@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Spatie\Url\Url;
 
-class CancelHelpRequestNotification extends Notification {
+class AcceptedVolunteerHelpRequestNotification extends Notification {
     use Queueable;
 
     /** @var HelpRequest $helpRequest */
@@ -44,14 +44,14 @@ class CancelHelpRequestNotification extends Notification {
         $url = Url::fromString(config('app.url_front'))->withPath(config('app.profile_url'));
 
         return (new MailMessage)
-            ->subject(trans('mail.help_request.cancelled_requester.subject'))
-            ->greeting(trans('mail.common.hi', []))
-            ->line(trans('mail.help_request.cancelled_requester.body', [
-                'profileURL'  => config('app.url_front'),
-                'name'        => $this->helpRequest->user->name,
+            ->subject(trans('mail.help_request.accepted_volunteer.subject'))
+            ->greeting(trans('mail.common.hi_user', ['user' => \Auth::user()->name]))
+            ->line(trans('mail.help_request.accepted_volunteer.body', [
                 'description' => $this->helpRequest->message,
+                'telephone'   => $this->helpRequest->user->phone,
+                'name'        => $this->helpRequest->user->name,
             ]))
-            ->action(trans('mail.help_request.cancelled_requester.act_btn'), $url);
+            ->action(trans('mail.help_request.accepted_requester.act_btn'), $url);
     }
 
     /**

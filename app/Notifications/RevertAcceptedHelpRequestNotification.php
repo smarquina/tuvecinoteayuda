@@ -6,6 +6,7 @@ use App\Models\HelpRequest\HelpRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Spatie\Url\Url;
 
 class RevertAcceptedHelpRequestNotification extends Notification
 {
@@ -40,6 +41,8 @@ class RevertAcceptedHelpRequestNotification extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable) {
+        $url = Url::fromString(config('app.url_front'))->withPath(config('app.profile_url'));
+
         return (new MailMessage)
             ->subject(trans('mail.help_request.cancelled_volunteer.subject'))
             ->greeting(trans('mail.common.hi_user', ['user' => $this->helpRequest->user->name]))
@@ -48,7 +51,7 @@ class RevertAcceptedHelpRequestNotification extends Notification
                 'name'        => \Auth::user()->name,
                 'description' => $this->helpRequest->message,
             ]))
-            ->action(trans('mail.help_request.cancelled_volunteer.act_btn'), config('app.url_front'));
+            ->action(trans('mail.help_request.cancelled_volunteer.act_btn'), $url);
     }
 
     /**

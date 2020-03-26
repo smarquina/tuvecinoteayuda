@@ -55,6 +55,8 @@ return [
     'url'       => env('APP_URL', 'http://localhost'),
     'url_front' => env('APP_FRONT_URL', 'https://tuvecinoteayuda.org/'),
 
+    'profile_url' => env('URL_PROFILE', "login.html"),
+
     'asset_url' => env('ASSET_URL', null),
 
     /*

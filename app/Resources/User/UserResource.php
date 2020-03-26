@@ -27,9 +27,13 @@ class UserResource extends ApiResource {
      */
     public function toArray($request) {
         /** @var User $user */
-        $user           = clone $this;
+        $user = clone $this;
+
         $is_association = $user->user_type_id == UserType::USER_TYPE_ASSOCIATION;
-        $show_direction = $this->additional['show_direction'] ?? false;
+        $is_volunteer   = $user->user_type_id == UserType::USER_TYPE_VOLUNTEER;
+
+        $show_direction    = $this->additional['show_direction'] ?? false;
+        $show_associations = $this->additional['show_associations'] ?? true;
 
         return [
             'id'                => $user->id,
@@ -43,12 +47,14 @@ class UserResource extends ApiResource {
             'city'              => $user->city,
             'state'             => $user->state,
             'zip_code'          => $user->zip_code,
-            'nearby_areas_id'   => $this->when(!$this->resume, $user->nearbyAreas
-                ? new NearbyAreasResource($user->nearbyAreas)
-                : 99),
+            'nearby_areas_id'   => $this->when(!$this->resume && $is_volunteer,
+                                               $user->nearbyAreas
+                                                   ? new NearbyAreasResource($user->nearbyAreas)
+                                                   : 99),
             'activity_areas_id' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
             'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
-            'associations'      => $this->when(!$this->resume, new UserCollection($user->associations)),
+            'associations'      => $this->when(!$this->resume && $show_associations,
+                                               new UserCollection($user->associations)),
         ];
     }
 }

@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Api\HelpRequest;
 
+use App\Events\AcceptedHelpRequest;
 use App\Events\CancelHelpRequest;
 use App\Events\RevertAcceptedHelpRequest;
 use App\Http\Controllers\Api\ApiController;
@@ -120,6 +121,8 @@ class HelpRequestController extends ApiController {
             $help_request->assignedUser()->syncWithoutDetaching([\Auth::id()]);
             $help_request->accepted_at = now();
             $help_request->save();
+
+            event(new AcceptedHelpRequest($help_request));
 
             return new HelpRequestResource($help_request);
         } catch (\Exception $exception) {

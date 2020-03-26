@@ -46,7 +46,7 @@ return [
         'accepted_requester'  => [
             'subject' => 'Su petición de ayuda va a ser atendida por su vecin@!',
             'body'    => "Tu solicitud de ayuda :description ha sido aceptada por :name.
-                          En tu <a href=':profileURL'>perfil</a> puedes ver más información y aceptar al vecino/a que se ha ofrecido a ayudarte.",
+                          En tu <a href=':profileURL'>perfil</a> puedes ver más información y contactar con el vecino/a que se ha ofrecido a ayudarte.",
             'act_btn' => 'Ir a mi perfil',
         ],
         'accepted_volunteer'  => [
@@ -73,6 +73,14 @@ return [
         'new'                 => [
             'subject' => 'Uno de tus vecinos necesita tu ayuda.',
             'body'    => 'Uno de tus vecinos necesita tu ayuda. Acepta su solicitud en tu <a href=\':profileURL\'>perfil</a>. \n
+                          Muchas gracias por ayudar.',
+            'act_btn' => 'Ir a mi perfil',
+        ],
+    ],
+    'association' => [
+        'user_joined'                 => [
+            'subject' => 'Un usuario se ha unido a la asociación.',
+            'body'    => ':name se ha unido a <i>:association</i>. Puedes ver su información desde tu <a href=\':profileURL\'>perfil</a>. \n
                           Muchas gracias por ayudar.',
             'act_btn' => 'Ir a mi perfil',
         ],

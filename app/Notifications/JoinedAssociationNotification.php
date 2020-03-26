@@ -3,25 +3,25 @@
 namespace App\Notifications;
 
 use App\Models\HelpRequest\HelpRequest;
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Spatie\Url\Url;
 
-class CancelHelpRequestNotification extends Notification {
+class JoinedAssociationNotification extends Notification {
     use Queueable;
 
-    /** @var HelpRequest $helpRequest */
-    public $helpRequest;
+    /** @var User $association */
+    public $association;
 
     /**
      * Create a new notification instance.
      *
-     * @param HelpRequest $helpRequest
+     * @param User $association
      */
-    public function __construct(HelpRequest $helpRequest) {
-        $this->helpRequest = $helpRequest;
+    public function __construct(User $association) {
+        $this->association = $association;
     }
 
     /**
@@ -44,14 +44,14 @@ class CancelHelpRequestNotification extends Notification {
         $url = Url::fromString(config('app.url_front'))->withPath(config('app.profile_url'));
 
         return (new MailMessage)
-            ->subject(trans('mail.help_request.cancelled_requester.subject'))
-            ->greeting(trans('mail.common.hi', []))
-            ->line(trans('mail.help_request.cancelled_requester.body', [
+            ->subject(trans('mail.association.user_joined.subject'))
+            ->greeting(trans('mail.common.hi_user', ['user' => \Auth::user()->name]))
+            ->line(trans('mail.association.user_joined.body', [
                 'profileURL'  => config('app.url_front'),
-                'name'        => $this->helpRequest->user->name,
-                'description' => $this->helpRequest->message,
+                'name'        => ucfirst(\Auth::user()->name),
+                'association' => ucfirst($this->association->corporate_name),
             ]))
-            ->action(trans('mail.help_request.cancelled_requester.act_btn'), $url);
+            ->action(trans('mail.association.user_joined.act_btn'), $url);
     }
 
     /**

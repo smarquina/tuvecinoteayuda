@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Events\JoinedAssociation;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
 use App\Http\Requests\User\UserRequest;
@@ -42,7 +43,7 @@ class UserController extends ApiController {
     public function update(UserRequest $request) {
         try {
             /** @var User $user */
-            $user = \Auth::user();
+            $user             = \Auth::user();
             $updatable_fields = ['address', 'city', 'state', 'zip_code'];
             if ($user->user_type_id == UserType::USER_TYPE_VOLUNTEER) {
                 $updatable_fields = array_merge($updatable_fields, ['nearby_areas_id']);
@@ -104,7 +105,9 @@ class UserController extends ApiController {
             if ($association instanceof User) {
                 /** @var User $user */
                 $user = \Auth::user();
-                $user->associations()->syncWithoutDetaching([$association->id]);
+                $user->associations()->attach($association->id);
+
+                event(new JoinedAssociation($association));
 
                 return $this->responseOK(trans('user.association.join.correct',
                                                ['value' => $association->corporate_name]));

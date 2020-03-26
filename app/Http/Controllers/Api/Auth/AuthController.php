@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\VerificationRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User\User;
 use App\Models\User\UserStatus;
@@ -86,6 +87,32 @@ class AuthController extends ApiController {
             return $this->responseWithError(HttpErrors::CANT_COMPLETE_REQUEST, trans('auth.login.noToken'));
         } catch (\Exception $exception) {
             return $this->responseWithError(HttpErrors::CANT_COMPLETE_REQUEST, trans('auth.login.userNoExist'));
+        }
+    }
+
+    public function verifyUserData(VerificationRequest $request) {
+        try {
+            /** @var User $user */
+            $user  = \Auth::user();
+            $image = $request->file('image');
+
+            \Storage::disk('private')->putFileAs("verifications", $image, "{$user->id}.{$image->clientExtension()}");
+            $response = \Http::post(env('URL_VERIFICATION'), ["img" => base64_encode($image->get())]);
+            switch ($response) {
+                case $response->successful():
+                    $dniText = collect(explode("\n",
+                                               collect($response->json()["textAnnotations"])->first()['description']));
+                    dd($dniText);
+                    break;
+                case $response->clientError():
+                    return $this->responseWithError($response->status(), $response->body());
+                    break;
+                case $response->serverError():
+                    return $this->responseWithError($response->status(), $response->body());
+                    break;
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
         }
     }
 }
