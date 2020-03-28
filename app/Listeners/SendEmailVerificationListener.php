@@ -13,7 +13,7 @@ class SendEmailVerificationListener {
      * @return void
      */
     public function handle(Registered $event) {
-        $this->handleRegistered($event);
+        //$this->handleRegistered($event);
     }
 
     /**
