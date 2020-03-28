@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/** @var \Dingo\Api\Routing\Router $api */
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['api']], function ($api) {
@@ -44,7 +45,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
         $api->get('user-types', 'User\UserTypeController@index');
 
         $api->group(array('namespace' => 'HelpRequest'), function ($api) {
-            $api->get('help-request-types', 'HelpRequestTypeController@index');
+            $api->get('help-request-types', 'HelpRequestTypeController@list');
 
             $api->get('help-requests',                              'HelpRequestController@list');
             $api->post('help-requests',                             'HelpRequestController@store');

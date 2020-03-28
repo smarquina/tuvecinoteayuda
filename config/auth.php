@@ -114,4 +114,5 @@ return [
 
     'password_timeout' => 10800,
 
+    'verification_name_percentage' => 70
 ];

@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Enums\HttpErrors;
+use App\Http\Managers\Auth\VerifyUserManager;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\VerificationRequest;
 use App\Http\Requests\User\UserRequest;
@@ -19,6 +20,9 @@ use App\Models\User\UserStatus;
 use App\Models\User\UserType;
 use App\Resources\User\UserResource;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Client\Response;
+use Illuminate\Http\File;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 
@@ -93,26 +97,33 @@ class AuthController extends ApiController {
     public function verifyUserData(VerificationRequest $request) {
         try {
             /** @var User $user */
-            $user  = \Auth::user();
-            $image = $request->file('image');
+            $user       = \Auth::user();
+            $user->name = ucwords(Str::lower($request->input('name')));
 
-            \Storage::disk('private')->putFileAs("verifications", $image, "{$user->id}.{$image->clientExtension()}");
-            $response = \Http::post(env('URL_VERIFICATION'), ["img" => base64_encode($image->get())]);
-            switch ($response) {
-                case $response->successful():
-                    $dniText = collect(explode("\n",
-                                               collect($response->json()["textAnnotations"])->first()['description']));
-                    dd($dniText);
-                    break;
-                case $response->clientError():
-                    return $this->responseWithError($response->status(), $response->body());
-                    break;
-                case $response->serverError():
-                    return $this->responseWithError($response->status(), $response->body());
-                    break;
+            if (VerifyUserManager::dniValidator($request->input('dni'))) {
+                $user->cif = Str::upper($request->input('dni'));
+
+                \Image::make($request->input('image'))
+                      ->fit(600)
+                      ->encode('jpg')
+                      ->save(storage_path("app/private/verifications/{$user->id}.jpg"));
+
+                $response = VerifyUserManager::verifyUser($request->input('image'), $user);
+                if ($response->verified) {
+                    $user->verified = true;
+                    $user->save();
+
+                    return $this->responseOK(trans('user.verification.correct'));
+                } else {
+                    return $response->response instanceof Response
+                        ? $this->responseWithError($response->response->status(), $response->response->body())
+                        : $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, trans('user.verification.error'));
+                }
+            } else {
+                throw new \Exception(trans('user.verification.dni_invalid'));
             }
         } catch (\Exception $exception) {
-            \Log::error($exception);
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $exception->getMessage());
         }
     }
 }

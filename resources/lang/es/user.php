@@ -8,7 +8,7 @@
  */
 
 return [
-    'attributes'  => [
+    'attributes'   => [
         'user_type_id'          => "Tipo de usuario",
         'nearby_areas_id'       => "Zonas",
         'password_confirmation' => "Confirmación de contraseña",
@@ -17,7 +17,7 @@ return [
         'cif'                   => "CIF/NIF",
         'token'                 => 'Código de seguridad',
     ],
-    'association' => [
+    'association'  => [
         'join'   => [
             'correct' => 'Te has unido correctamente a la asociación :value',
             'error'   => 'No podemos localizar esa asociación',
@@ -26,5 +26,11 @@ return [
             'correct' => 'Ahora ya no estás asociado a :value',
             'error'   => 'No podemos localizar esa asociación',
         ],
+    ],
+    'verification' => [
+        'connection_error' => 'No podemos conectar con el servicio de verificación de usuarios.',
+        'error'            => 'No podemos verificar el DNI, envíe una  foto de más calidad o revise los datos',
+        'correct'          => 'Gracias por verificar tus datos.',
+        'dni_invalid'      => 'El DNI proporcionado no es válido',
     ],
 ];
