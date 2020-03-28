@@ -94,6 +94,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use Notifiable, Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
 
     /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
