@@ -31,7 +31,7 @@ class ResetPasswordRequest extends ApiRequest {
     public function rules() {
         return [
             'token'                 => 'required',
-            'email'                 => 'required|email|exists:user,email',
+            'email'                 => 'required|email|exists:users,email',
             'password'              => 'required|max:20|min:8|confirmed',
             'password_confirmation' => 'required|max:20',
         ];
