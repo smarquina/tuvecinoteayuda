@@ -13,12 +13,31 @@ namespace App\Resources\User;
 use App\Models\User\ActivityAreas;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class ActivityAreasResource
+ * @package App\Http\Resources\User
+ * @OA\Schema(schema="ActivityAreas", type="object")
+ */
 class ActivityAreasResource extends JsonResource {
 
     /**
+     * @OA\Property(
+     *   property="id",
+     *   type="integer",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="name",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
      * Transform the resource into an array.
-     *
-     * @OA\Schema(schema="ActivityAreasResource", type="object")
      *
      * @param \Illuminate\Http\Request $request
      * @return array

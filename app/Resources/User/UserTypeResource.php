@@ -13,12 +13,32 @@ namespace App\Resources\User;
 use App\Models\User\UserType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class UserTypeResource
+ * @package App\Http\Resources\User
+ * @OA\Schema(schema="UserType", type="object")
+ */
 class UserTypeResource extends JsonResource {
+
+    /**
+     * @OA\Property(
+     *   property="id",
+     *   type="integer",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="name",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
 
     /**
      * Transform the resource into an array.
      *
-     * @OA\Schema(schema="UserTypeResource", type="object")
      *
      * @param \Illuminate\Http\Request $request
      * @return array

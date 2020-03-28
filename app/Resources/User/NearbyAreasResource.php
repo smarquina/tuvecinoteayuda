@@ -13,12 +13,31 @@ namespace App\Resources\User;
 use App\Models\User\NearbyAreas;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class NearbyAreasResource
+ * @package App\Http\Resources\User
+ * @OA\Schema(schema="NearbyAreas", type="object")
+ */
 class NearbyAreasResource extends JsonResource {
 
     /**
+     * @OA\Property(
+     *   property="id",
+     *   type="integer",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="name",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
      * Transform the resource into an array.
-     *
-     * @OA\Schema(schema="NearbyAreasResource", type="object")
      *
      * @param \Illuminate\Http\Request $request
      * @return array

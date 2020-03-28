@@ -14,13 +14,167 @@ use App\Resources\ApiResource;
 use App\Models\User\User;
 use App\Models\User\UserType;
 
+/**
+ * Class UserResource
+ * @package App\Http\Resources\User
+ * @OA\Schema(schema="User", type="object")
+ */
 class UserResource extends ApiResource {
 
+    /**
+     * @OA\Property(
+     *   property="id",
+     *   type="integer",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="name",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="phone",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="email",
+     *   type="string",
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="user_type_id",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/UserType"),
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="user_type",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/UserType"),
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="corporate_name",
+     *   type="string",
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="cif",
+     *   type="string",
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="address",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="city",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="state",
+     *   type="sting",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="zip_code",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="nearby_areas_id",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/NearbyAreas"),
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="nearby_areas",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/NearbyAreas"),
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="activity_areas_id",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/ActivityAreas"),
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="activity_areas",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/ActivityAreas"),
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="user_status_id",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/UserStatus"),
+     *   nullable=true,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="user_status",
+     *   type="object",
+     *        @OA\Items(ref="#/components/schemas/UserStatus"),
+     *   nullable=true,
+     * )
+     */
 
     /**
      * Transform the resource into an array.
-     *
-     * @OA\Schema(schema="UserResource", type="object")
      *
      * @param \Illuminate\Http\Request $request
      * @return array
@@ -57,9 +211,9 @@ class UserResource extends ApiResource {
                                                    ? new NearbyAreasResource($user->nearbyAreas)
                                                    : 99),
             'activity_areas_id' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)), //legacy
-            'activity_areas' => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
+            'activity_areas'    => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
             'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)), //legacy
-            'user_status'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
+            'user_status'       => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
             'associations'      => $this->when(!$this->resume && $show_associations,
                                                new UserCollection($user->associations)),
         ];

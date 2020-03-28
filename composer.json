@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5",
         "ext-json": "*",
+        "darkaonline/l5-swagger": "^7.0",
         "dingo/api": "^3.0.0-rc3",
         "doctrine/dbal": "^2.8",
         "fideloper/proxy": "^4.2",

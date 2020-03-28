@@ -13,12 +13,31 @@ namespace App\Resources\User;
 use App\Models\User\UserStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class UserStatusResource
+ * @package App\Http\Resources\User
+ * @OA\Schema(schema="UserStatus", type="object")
+ */
 class UserStatusResource extends JsonResource {
 
     /**
+     * @OA\Property(
+     *   property="id",
+     *   type="integer",
+     *   nullable=false,
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="name",
+     *   type="string",
+     *   nullable=false,
+     * )
+     */
+
+    /**
      * Transform the resource into an array.
-     *
-     * @OA\Schema(schema="UserStatusResource", type="object")
      *
      * @param \Illuminate\Http\Request $request
      * @return array

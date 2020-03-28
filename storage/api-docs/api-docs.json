@@ -1,0 +1,543 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tu vecino te ayuda API",
+        "description": "This is a Beta version of tuvecinoteayuda api. Use it carefully and report all bugs and security problems found.",
+        "termsOfService": "https://tuvecinoteayuda.org/politica_privacidad.pdf",
+        "contact": {
+            "email": "hablamos@tuvecinoteayuda.org"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://www.api.tuvecinoteayuda.org/",
+            "description": "Tu vecino te Ayuda OpenApi host"
+        }
+    ],
+    "paths": {
+        "/api/public/auth/register": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register new user",
+                "operationId": "register",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "zip_code": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "required. must match password",
+                                        "type": "string"
+                                    },
+                                    "activity_areas_id": {
+                                        "description": "required. only for associations",
+                                        "type": "integer"
+                                    },
+                                    "user_type_id": {
+                                        "description": "required. volunteer, requester, association",
+                                        "type": "integer"
+                                    },
+                                    "nearby_areas_id": {
+                                        "description": "required. only for volunteer",
+                                        "type": "integer"
+                                    },
+                                    "corporate_name": {
+                                        "description": "Nullable. required for associations",
+                                        "type": "string"
+                                    },
+                                    "cif": {
+                                        "description": "Nullable. required for associations",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User and token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "description": "Register new user",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Request invalid. see errors"
+                    }
+                }
+            }
+        },
+        "/api/public/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login users",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "user": {
+                                        "description": "required. phone or email",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Log in client",
+                                        "type": "string|required"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "nick": "smarquina",
+                                    "password": "XXXX"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User and token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        },
+                                        "token": {
+                                            "description": "Log in client",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "550": {
+                        "description": "User not found / invalid credentials."
+                    }
+                }
+            }
+        },
+        "/api/user/verify": {
+            "post": {
+                "tags": [
+                    "auth",
+                    "user"
+                ],
+                "summary": "Verify DNI service",
+                "operationId": "verifyUserData",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Required. Same full name as DNI",
+                                        "type": "string"
+                                    },
+                                    "dni": {
+                                        "description": "Required",
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "description": "Required. Base64 image",
+                                        "type": "string|required"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Verify DNI service.",
+                                            "type": "string"
+                                        },
+                                        "status_code": {
+                                            "description": "Verify DNI service.",
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "description": "Verify DNI service.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error connection / not verifiable"
+                    },
+                    "422": {
+                        "description": "Request invalid. see errors"
+                    }
+                }
+            }
+        },
+        "/api/public/auth/password/email": {
+            "post": {
+                "tags": [
+                    "password",
+                    "user"
+                ],
+                "summary": "Request reset email",
+                "operationId": "sendResetLinkEmail",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "email, required",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Send a reset link to the given user.",
+                                            "type": "string"
+                                        },
+                                        "status_code": {
+                                            "description": "Send a reset link to the given user.",
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "description": "Send a reset link to the given user.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error ocurred"
+                    },
+                    "422": {
+                        "description": "Request invalid. see errors"
+                    }
+                }
+            }
+        },
+        "/api/public/auth/password/reset": {
+            "post": {
+                "tags": [
+                    "password",
+                    "user"
+                ],
+                "summary": "Reset password",
+                "operationId": "reset",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "email, required",
+                                        "type": "string"
+                                    },
+                                    "token": {
+                                        "description": "Token reciebed from email",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "required",
+                                        "type": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "required. must match password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Reset the given user's password.",
+                                            "type": "string"
+                                        },
+                                        "status_code": {
+                                            "description": "Reset the given user's password.",
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "description": "Reset the given user's password.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error ocurred"
+                    },
+                    "422": {
+                        "description": "Request invalid. see errors"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HelpRequestResource": {
+                "type": "object"
+            },
+            "HelpRequestTypeResource": {
+                "type": "object"
+            },
+            "ActivityAreas": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "NearbyAreas": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "user_type_id": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/UserType"
+                        },
+                        "nullable": true
+                    },
+                    "user_type": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/UserType"
+                        },
+                        "nullable": true
+                    },
+                    "corporate_name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "cif": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "city": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "state": {
+                        "type": "sting",
+                        "nullable": false
+                    },
+                    "zip_code": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "nearby_areas_id": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/NearbyAreas"
+                        },
+                        "nullable": true
+                    },
+                    "nearby_areas": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/NearbyAreas"
+                        },
+                        "nullable": true
+                    },
+                    "activity_areas_id": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/ActivityAreas"
+                        },
+                        "nullable": true
+                    },
+                    "activity_areas": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/ActivityAreas"
+                        },
+                        "nullable": true
+                    },
+                    "user_status_id": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/UserStatus"
+                        },
+                        "nullable": true
+                    },
+                    "user_status": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/UserStatus"
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UserStatus": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "UserType": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "user"
+        },
+        {
+            "name": "helpRequest",
+            "description": "handle all help request and volunteers help"
+        }
+    ]
+}
