@@ -55,7 +55,8 @@ class VerificationController extends Controller {
         try {
             /** @var User $user */
             $user = User::findOrFail($request->route('id'));
-            $url  = Url::fromString(config('app.url_front'));
+            $url  = Url::fromString(config('app.url_front'))
+                       ->withPath(config('app.profile_url'));
 
             if (!hash_equals((string)$request->route('hash'), sha1($user->getEmailForVerification()))) {
                 throw new AuthorizationException;
