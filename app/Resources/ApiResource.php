@@ -30,4 +30,13 @@ abstract class ApiResource extends JsonResource
         parent::__construct($resource);
     }
 
+    /**
+     * Get additional data that should be returned with the resource array.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function with($request) {
+        return [];
+    }
 }

@@ -279,7 +279,7 @@ class AuthController extends ApiController {
                 $user->cif = Str::upper($request->input('dni'));
 
                 \Image::make($request->input('image'))
-                      ->fit(600)
+                      ->fit(800)
                       ->encode('jpg')
                       ->save(storage_path("app/private/verifications/{$user->id}.jpg"));
 

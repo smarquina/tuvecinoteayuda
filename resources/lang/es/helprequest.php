@@ -8,18 +8,21 @@
  */
 
 return [
-    'attributes' => [
+    'attributes'        => [
 
     ],
-    'revert'     => [
+    'accept'            => [
+        'already' => 'Ya ha aceptado esta petición de ayuda. ¡Gracias por tu atención!',
+    ],
+    'revert'            => [
         'accepted' => 'Se ha cancelado la inscripción. ¡Lástima, esperamos que en otra ocasión puedas ayudar a tus vecin@s!',
         'error'    => 'No podemos cancelar esa inscripción de ayuda',
     ],
-    'delete'     => [
+    'delete'            => [
         'correct' => 'Hemos cancelado tu solicitud de ayuda. ¡Recuerda que cualquier cosa que necesites, nosotros trataremos de ayudarte!',
         'error'   => 'No hemos podido cancelar tu solicitud de ayuda',
     ],
-    'trackexternalcall'     => [
+    'trackexternalcall' => [
         'correct' => 'Llamada externa anotada correctamente.',
         'error'   => 'No hemos podido anotar la llamada externa.',
     ],

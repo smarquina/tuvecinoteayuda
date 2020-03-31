@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null                                       $created_at
  * @property \Illuminate\Support\Carbon|null                                       $updated_at
  * @property \Illuminate\Support\Carbon|null                                       $deleted_at
+ * @property int|null                                                              $track_external_call
+ * @property string|null                                                           $track_external_call_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User\User[] $assignedUser
  * @property-read int|null                                                         $assigned_user_count
  * @property-read \App\Models\HelpRequest\HelpRequestType                          $type
@@ -45,11 +47,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\HelpRequest\HelpRequest withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\HelpRequest\HelpRequest withoutTrashed()
- * @mixin \Eloquent
- * @property int|null $track_external_call
- * @property string|null $track_external_call_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereTrackExternalCall($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\HelpRequest\HelpRequest whereTrackExternalCallAt($value)
+ * @mixin \Eloquent
  */
 class HelpRequest extends BaseModel {
 
@@ -69,7 +69,8 @@ class HelpRequest extends BaseModel {
      * @var array
      */
     protected $fillable = [
-        'user_id', 'help_request_type_id', 'message', 'assigned_user_id', 'accepted_at', 'track_external_call', 'track_external_call_at',
+        'user_id', 'help_request_type_id', 'message', 'assigned_user_id', 'accepted_at',
+        'track_external_call', 'track_external_call_at',
     ];
 
     /**

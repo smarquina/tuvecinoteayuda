@@ -50,7 +50,7 @@ class VerifyUserManager {
                             case DniVars::FECHA_DE_NACIMIENTO:
                                 $currentDniVar = DniVars::FECHA_DE_NACIMIENTO;
                                 break;
-                            case (preg_match('/^' . DniVars::DNI . '\s([0-9]{8}[A-Z]{1})\z/', $text, $matches) ? true : false):
+                            case (preg_match('/^.*\s([0-9]{8}[A-Z]{1})\z/', $text, $matches) ? true : false):
                                 $currentDniVar = null;
                                 $dniVars->setDni($matches[1]);
                                 break;
@@ -69,6 +69,7 @@ class VerifyUserManager {
                                         break;
                                     case DniVars::FECHA_DE_NACIMIENTO:
                                         $dniVars->setBirthday($text);
+                                        $currentDniVar = null;
                                         break;
                                 }
                         }
@@ -77,9 +78,9 @@ class VerifyUserManager {
                     similar_text(self::trimText("{$dniVars->getName()} {$dniVars->getSurname()}"),
                                  self::trimText($user->name),
                                  $threshold);
-
+                    
                     if ($threshold >= config('auth.verification_name_percentage') &&
-                        self::trimText($dniVars->getDni()) == self::trimText($user->cif)) {
+                        self::dniComparator($user->cif, $dniVars->getDni())) {
 
                         $user->birthday = $dniVars->getBirthday();
                         return new VerificationResponse(true, null);
@@ -110,6 +111,22 @@ class VerifyUserManager {
         return (substr("TRWAGMYFPDXBNJZSQVHLCKE", $numbers % 23, 1) == $letter
                 && strlen($letter) == 1
                 && strlen($numbers) == 8);
+    }
+
+    /**
+     * Check is dni threshold correct.
+     *
+     * @param string $dniUser
+     * @param string $dniOCR
+     * @return bool
+     */
+    private static function dniComparator(string $dniUser, string $dniOCR): bool {
+        preg_match("/^([0-9]{8})/", $dniOCR, $matches);
+        similar_text(self::trimText(substr($dniUser, 0, -1)),
+                     self::trimText($matches[1]),
+                     $threshold);
+
+        return $threshold >= config('auth.verification_dni_percentage');
     }
 
     /**
@@ -207,7 +224,10 @@ class DniVars {
      * @param string $birthday
      */
     public function setBirthday($birthday): void {
-        $this->birthday = Carbon::createFromFormat("d m Y", $birthday);
+
+        if (preg_match("/^[0-9]{2}\s[0-9]{2}\s[0-9]{4}\z/", $birthday)) {
+            $this->birthday = Carbon::createFromFormat("d m Y", $birthday);
+        }
     }
 
 

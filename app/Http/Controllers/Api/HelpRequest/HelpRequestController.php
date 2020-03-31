@@ -118,13 +118,22 @@ class HelpRequestController extends ApiController {
         try {
             $help_request = HelpRequest::findOrFail($id);
 
-            $help_request->assignedUser()->syncWithoutDetaching([\Auth::id()]);
-            $help_request->accepted_at = now();
-            $help_request->save();
+            if (!$help_request->assignedUser->contains('id', Auth::id())) {
 
-            event(new AcceptedHelpRequest($help_request));
+                $help_request->assignedUser()->attach(\Auth::id());
+                $help_request->accepted_at = now();
+                $help_request->save();
 
-            return new HelpRequestResource($help_request);
+//            event(new AcceptedHelpRequest($help_request));
+
+                return (new HelpRequestResource($help_request))
+                    ->additional(['show_direction'                => true,
+                                  'show_assigned_additional_data' => true]);
+
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                                trans('helprequest.accept.already'));
+            }
         } catch (\Exception $exception) {
             \Log::error($exception);
             $msg = config('app.debug') ? $exception->getMessage() : trans('general.model.update.error');
@@ -151,7 +160,7 @@ class HelpRequestController extends ApiController {
                     $help_request->save();
                 }
 
-                event(new RevertAcceptedHelpRequest($help_request));
+//                event(new RevertAcceptedHelpRequest($help_request));
 
                 return $this->responseOK(trans('helprequest.revert.accepted'));
             } else {
@@ -180,7 +189,7 @@ class HelpRequestController extends ApiController {
                 $help_request->assignedUser()->sync([]);
                 $help_request->delete();
 
-                event(new CancelHelpRequest($help_request));
+//                event(new CancelHelpRequest($help_request));
 
                 return $this->responseOK(trans('helprequest.delete.correct'));
             } else {
