@@ -174,6 +174,24 @@ class UserResource extends ApiResource {
      */
 
     /**
+     * @OA\Property(
+     *   property="verified",
+     *   type="boolean",
+     *   nullable=true,
+     *   description="present when resource is logged user",
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *   property="verified_email",
+     *   type="boolean",
+     *   nullable=true,
+     *   description="present when resource is logged user",
+     * )
+     */
+
+    /**
      * Transform the resource into an array.
      *
      * @param \Illuminate\Http\Request $request
@@ -214,6 +232,8 @@ class UserResource extends ApiResource {
             'activity_areas'    => $this->when($is_association, new ActivityAreasResource($user->activityAreas)),
             'user_status_id'    => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)), //legacy
             'user_status'       => $this->when($user->id == \Auth::id(), new UserStatusResource($user->status)),
+            'verified'          => $this->when($user->id == \Auth::id(), $user->verified),
+            'verified_email'    => $this->when($user->id == \Auth::id(), $user->hasVerifiedEmail()),
             'associations'      => $this->when(!$this->resume && $show_associations,
                                                new UserCollection($user->associations)),
         ];

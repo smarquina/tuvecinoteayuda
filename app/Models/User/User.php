@@ -128,6 +128,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'created_at',
         'updated_at',
         'email_verified_at',
+        'birthday',
     ];
 
     protected $casts = [
@@ -144,6 +145,9 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'activity_areas_id' => 'integer',
         'user_status_id'    => 'integer',
         'email_verified_at' => 'datetime',
+        'birthday'          => 'datetime',
+        'verified'          => 'boolean',
+
     ];
 
     /**

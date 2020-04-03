@@ -241,6 +241,54 @@
                 }
             }
         },
+        "/api/user/verification/resend": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Request verificarion email",
+                "operationId": "resendVerificationEmail",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Re-send verification email.",
+                                            "type": "string"
+                                        },
+                                        "status_code": {
+                                            "description": "Re-send verification email.",
+                                            "type": "integer"
+                                        },
+                                        "status": {
+                                            "description": "Re-send verification email.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error ocurred"
+                    },
+                    "422": {
+                        "description": "Request invalid. see errors"
+                    }
+                }
+            }
+        },
         "/api/public/auth/password/email": {
             "post": {
                 "tags": [
@@ -498,6 +546,16 @@
                         "items": {
                             "$ref": "#/components/schemas/UserStatus"
                         },
+                        "nullable": true
+                    },
+                    "verified": {
+                        "description": "present when resource is logged user",
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "verified_email": {
+                        "description": "present when resource is logged user",
+                        "type": "boolean",
                         "nullable": true
                     }
                 },

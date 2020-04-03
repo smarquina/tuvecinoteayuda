@@ -301,4 +301,49 @@ class AuthController extends ApiController {
             return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $exception->getMessage());
         }
     }
+
+    /**
+     * Re-send verification email.
+     *
+     * @return JsonResponse
+     *
+     * @OA\Post(
+     *   path="/api/user/verification/resend",
+     *   summary="Request verificarion email",
+     *   tags={"user"},
+     *   operationId="resendVerificationEmail",
+     *   @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+
+     *              ),
+     *         )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Ok response",
+     *    @OA\JsonContent(type="object",
+     *       @OA\Property(property="message", type="string"),
+     *       @OA\Property(property="status_code", type="integer"),
+     *       @OA\Property(property="status", type="string"),
+     *     ),
+     *  ),
+     * @OA\Response(response="400", description="Error ocurred"),
+     * @OA\Response(response="422", description="Request invalid. see errors"),
+     * )
+     *
+     */
+    public function resendVerificationEmail() {
+        try {
+            $user = \Auth::user();
+            event(new Registered($user));
+
+            return $this->responseOK();
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug' ? $exception->getMessage() : trans('general.model.find.error'));
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
+    }
 }
