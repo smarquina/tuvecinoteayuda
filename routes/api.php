@@ -51,6 +51,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api', 'middleware' => 
             $api->post('help-requests',                             'HelpRequestController@store');
             $api->delete('help-requests/{id}',                      'HelpRequestController@delete')->where('id', '[0-9]+');
             $api->post('help-requests/accept/{id}',                 'HelpRequestController@accept')->where('id', '[0-9]+');
+            $api->post('help-requests/close/{id}',                  'HelpRequestController@close')->where('id', '[0-9]+');
             $api->delete('help-requests/revert/{id}',               'HelpRequestController@revert')->where('id', '[0-9]+');
             $api->get('help-requests/pending',                      'HelpRequestController@pending');
             $api->post('help-requests/track-external-call/{id}',    'HelpRequestController@trackExternalCall')->where('id', '[0-9]+');

@@ -142,6 +142,33 @@ class HelpRequestController extends ApiController {
     }
 
     /**
+     * User close help request.
+     *
+     * @param Request $request
+     * @param int     $id
+     * @return \Illuminate\Http\JsonResponse|HelpRequestResource
+     */
+    public function close(Request $request, $id) {
+        try {
+            $help_request = HelpRequest::findOrFail($id);
+
+            if ($help_request->user_id == \Auth::id()) {
+                $help_request->closed_at = now();
+                $help_request->save();
+
+                return $this->responseOK(trans('helprequest.close.correct'));
+            } else {
+                return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST,
+                                                trans('helprequest.close.error'));
+            }
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            $msg = config('app.debug') ? $exception->getMessage() : trans('helprequest.close.error');
+            return $this->responseWithError(HttpErrors::HTTP_BAD_REQUEST, $msg);
+        }
+    }
+
+    /**
      * Cancel accepted help request.
      *
      * @param Request $request

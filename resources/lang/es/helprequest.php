@@ -14,6 +14,10 @@ return [
     'accept'            => [
         'already' => 'Ya ha aceptado esta petición de ayuda. ¡Gracias por tu atención!',
     ],
+    'close'            => [
+        'accepted' => 'Se ha finalizado la solicitud. ¡Envía una nueva solicitud si vuelves a necesitar ayuda!',
+        'error'    => 'No podemos finalizar esta inscripción de ayuda',
+    ],
     'revert'            => [
         'accepted' => 'Se ha cancelado la inscripción. ¡Lástima, esperamos que en otra ocasión puedas ayudar a tus vecin@s!',
         'error'    => 'No podemos cancelar esa inscripción de ayuda',
